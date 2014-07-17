@@ -6,5 +6,5 @@
     "autoload": {
         "psr-0": { "Chromedia\\WidgetFormBuilderBundle": "" }
     },
-    "target-dir": "Chromedia/WidgetFormBuilderBundle
+    "target-dir": "Chromedia/WidgetFormBuilderBundle"
 }
