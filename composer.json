@@ -1,0 +1,10 @@
+{
+    "name": "chromedia/widget-form-builder-bundle",
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-0": { "Chromedia\\WidgetFormBuilderBundle": "" }
+    },
+    "target-dir": "Chromedia/WidgetFormBuilderBundle
+}
