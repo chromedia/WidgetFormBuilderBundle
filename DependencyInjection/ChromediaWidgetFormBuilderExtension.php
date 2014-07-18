@@ -14,6 +14,12 @@ use Symfony\Component\DependencyInjection\Loader;
  */
 class ChromediaWidgetFormBuilderExtension extends Extension
 {
+
+    public function getInternalAlias()
+    {
+        return '_cwfb';
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -24,5 +30,15 @@ class ChromediaWidgetFormBuilderExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('forms.yml');
+
+        $widgets = $config['widgets'];
+
+        // create _cwfb.widget_selection_choices parameter
+        $widgetSelectionChoices = array();
+        foreach ($widgets as $widgetId => $widgetData) {
+            $widgetSelectionChoices[$widgetId] = $widgetData['name'];
+        }
+        $container->setParameter($this->getInternalAlias().'.widget_selection_choices', $widgetSelectionChoices);
     }
 }

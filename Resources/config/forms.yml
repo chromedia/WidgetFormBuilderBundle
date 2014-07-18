@@ -1,0 +1,7 @@
+services:
+    form.cwfb.available_widget_choice:
+        class: Chromedia\WidgetFormBuilderBundle\Form\AvailableWidgetChoiceFieldType
+        calls:
+            - [setChoices, [%_cwfb.widget_selection_choices%]]
+        tags:
+            - { name: form.type, alias: chromedia_available_widget_choice }

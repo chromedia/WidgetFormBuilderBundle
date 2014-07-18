@@ -1,0 +1,3 @@
+_cwfb_examples_index:
+    path: /examples
+    defaults: { _controller: ChromediaWidgetFormBuilderBundle:Examples:index }
