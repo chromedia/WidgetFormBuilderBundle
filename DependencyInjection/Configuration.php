@@ -6,6 +6,8 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Yaml\Yaml;
+use Chromedia\WidgetFormBuilderBundle\DependencyInjection\Core\CoreWidgets;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
@@ -23,20 +25,33 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('chromedia_widget_form_builder');
 
         // add widgets option
-        $this->addWidgets($rootNode);
+        $this->addCoreWidgets($rootNode);
 
+        $this->addCustomWidgets($rootNode);
 
         return $treeBuilder;
     }
 
-    private function addWidgets(ArrayNodeDefinition $node)
+    private function addCoreWidgets(ArrayNodeDefinition $node)
     {
-        // TODO: validate widget keys
-        $widgets = $node->children()
-            ->arrayNode('widgets')
+        $coreWidgets = $node->children()->arrayNode('core_widgets');
+        foreach (CoreWidgets::all() as $widgetId => $widgetProperty) {
+            $coreWidgets->append($this->createCoreWidget($widgetId, $widgetProperty));
+        }
+        $coreWidgets->end();
+    }
+
+    private function addCustomWidgets(ArrayNodeDefinition $node)
+    {
+        $node
+        ->children()
+            ->arrayNode('custom_widgets')
                 ->prototype('array')
                     ->children()
                         ->scalarNode('name')
+                            ->isRequired()
+                        ->end()
+                        ->scalarNode('parent_id')
                             ->isRequired()
                         ->end()
                     ->end()
@@ -45,15 +60,25 @@ class Configuration implements ConfigurationInterface
         ->end();
     }
 
-    private function createCoreWidget()
+    private function createCoreWidget($widgetId, $widgetProperty)
     {
         $treeBuilder = new TreeBuilder();
 
-        $root = $treeBuilder->root('choice');
+        $root = $treeBuilder->root($widgetId);
 
         $root->children()
             ->scalarNode('name')
-            ->end();
+                ->defaultValue($widgetProperty['name'])
+            ->end()
+            // this should be an internal option and should not be overwritten
+            ->booleanNode('with_choices')
+                ->defaultValue($widgetProperty['with_choices'])
+            ->end()
+            // this should be an internal option and should not be overwritten
+            ->booleanNode('internal')
+                ->defaultTrue()
+            ->end()
+        ->end();
 
         return $root;
 

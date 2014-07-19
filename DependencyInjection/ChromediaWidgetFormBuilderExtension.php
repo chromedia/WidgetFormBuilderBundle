@@ -32,11 +32,13 @@ class ChromediaWidgetFormBuilderExtension extends Extension
         $loader->load('services.yml');
         $loader->load('forms.yml');
 
-        $widgets = $config['widgets'];
+        $coreWidgets = $config['core_widgets'];
+
+        // TODO: MERGE with custom widgets
 
         // create _cwfb.widget_selection_choices parameter
         $widgetSelectionChoices = array();
-        foreach ($widgets as $widgetId => $widgetData) {
+        foreach ($coreWidgets as $widgetId => $widgetData) {
             $widgetSelectionChoices[$widgetId] = $widgetData['name'];
         }
         $container->setParameter($this->getInternalAlias().'.widget_selection_choices', $widgetSelectionChoices);
