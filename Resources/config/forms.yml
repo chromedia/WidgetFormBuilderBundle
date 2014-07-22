@@ -1,4 +1,11 @@
 services:
+
+    ## the main embedded form that will be used by other forms
+    form.cwfb.chromedia_widget_builder_form_type:
+        class: Chromedia\WidgetFormBuilderBundle\Form\WidgetBuilderFormType
+        tags:
+            - { name: form.type, alias: chromedia_widget_builder_form_type }
+
     form.cwfb.available_widget_choice:
         class: Chromedia\WidgetFormBuilderBundle\Form\AvailableWidgetChoiceFieldType
         calls:
