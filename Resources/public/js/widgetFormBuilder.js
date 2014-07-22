@@ -22,11 +22,16 @@ var WidgetFormBuilder = function(options){
 };
 
 WidgetFormBuilder.prototype.initForm = function(){
-    // build widget choices
+    
     var self = this;
+
+    // build widget choices
     var choicePrototype = this.formElements.widget_choices.data('prototype');
     this.formElements.widget_choices.append(choicePrototype);
 
+    //build widget attributes
+    var attributePrototype = this.formElements.widget_attribute.data('prototype');
+    this.formElements.widget_attribute.append(attributePrototype);
 
     //bind events
     var addFormRowInCollection = function($_collectionHolder) {
@@ -43,13 +48,19 @@ WidgetFormBuilder.prototype.initForm = function(){
         $(this).closest('.form-group').hide().html('');
     });
 
-    $('.add-widget-choice-trigger').on('click', function(e) {
+    this.formElements.widget_choices.on('click', '.add-widget-choice-trigger', function(e) {
         e.preventDefault();
 
-        var collectionHolder = self.formElements.widget_choices;
-        collectionHolder.data('index', collectionHolder.find('.form-group').length);
+        self.formElements.widget_choices.data('index', self.formElements.widget_choices.find('.form-group').length);
+        addFormRowInCollection(self.formElements.widget_choices);
+    });
 
-        addFormRowInCollection(collectionHolder);
+    this.formElements.widget_attribute.on('click', '.add-widget-choice-trigger', function(e) {
+        e.preventDefault();
+
+        self.formElements.widget_attribute.data('index', self.formElements.widget_attribute.find('.form-group').length);
+
+        addFormRowInCollection(self.formElements.widget_attribute);
     });
 };
 
