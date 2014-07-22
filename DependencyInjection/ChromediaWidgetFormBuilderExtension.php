@@ -42,5 +42,8 @@ class ChromediaWidgetFormBuilderExtension extends Extension
             $widgetSelectionChoices[$widgetId] = $widgetData['name'];
         }
         $container->setParameter($this->getInternalAlias().'.widget_selection_choices', $widgetSelectionChoices);
+
+        // _cwfb.form_template
+        $container->setParameter($this->getInternalAlias().'.form_template', $config['form_template']);
     }
 }
