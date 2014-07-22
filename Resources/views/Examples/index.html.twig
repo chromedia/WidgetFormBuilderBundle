@@ -2,30 +2,9 @@
 
     {{ form_row(form.widget_id)}}
 
-    {#{{ form_row(form.widget_choices) }}#}
+    {{ form_row(form.widget_choices) }}
 
-    {# This is temporary implementation of widget_choices #}
-    {{ form_label(form.widget_choices) }}
-    {% set dataProtoType %}
-        {% filter escape %}
-            {% include 'ChromediaWidgetFormBuilderBundle:Examples:_choice.html.twig' 
-                with {'widget_choice': form.widget_choices.vars.prototype } 
-            %}
-        {% endfilter %}
-    {% endset %}
-
-    <div class="collection-container" data-prototype="{{ dataProtoType }}">
-        {% for widget_choice in form.widget_choices %}
-            {% include 'ChromediaWidgetFormBuilderBundle:Examples:_choice.html.twig' with {
-                'widget_choice' : widget_choice
-            }%}
-        {% endfor %}
-    </div>
-    <a href="#" class="button-grey add-to-collection">Add</a>
-
-    {# End of widget_choices #}
-
-    {{form_row(form.widget_attribute)}}
+    {{ form_row(form.widget_attribute) }}
 
 </form>
 
@@ -46,6 +25,8 @@
     /**
      * Adds form row collection
      */
+
+    /**
     var addFormRowInCollection = function($_collectionHolder) {
         var prototype = $_collectionHolder.data('prototype');
         var index = $_collectionHolder.data('index');
@@ -57,17 +38,18 @@
 
     $('.add-to-collection').on('click', function(e) {
         e.preventDefault();
-    
+
         var collectionHolder = $('.collection-container');
         collectionHolder.data('index', collectionHolder.find('.collection-field-container').length);
 
-        addFormRowInCollection(collectionHolder);     
+        addFormRowInCollection(collectionHolder);
     });
 
     $('.collection-container').on('click', '.collection-delete-item', function(e) {
         e.preventDefault();
         $(this).closest('.collection-field-container').hide().html('');
     });
+    **/
     // end of widget_choices
 
 })(jQuery);

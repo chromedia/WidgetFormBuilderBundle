@@ -22,6 +22,6 @@ class WidgetChoiceFieldType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('choice', 'text');
+        $builder->add('choice', 'text', array('label' => false));
     }
 }
