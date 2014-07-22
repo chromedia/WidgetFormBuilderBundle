@@ -19,7 +19,10 @@ class WidgetBuilderFormType extends AbstractType
 
         // this will contain the possible values for widgets that has choices like choice, checkbox, radio
         // TODO: implement this
-        $builder->add('widget_choices', 'collection');
+        $builder->add('widget_choices', 'collection', array(
+            'type'      => 'chromedia_widget_choice',
+            'allow_add' => true
+        ));
 
         $builder->add('widget_attribute', 'collection', array(
         	'type' => 'chromedia_widget_attribute',
