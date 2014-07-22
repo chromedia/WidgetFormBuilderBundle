@@ -16,12 +16,12 @@ class WidgetChoiceFieldType extends AbstractType
     {
         $resolver->setDefaults(array(
             'allow_add' => true,
-            'prototype' => true,
+            'prototype' => true
         ));
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('choice', 'text', array('label' => false));
+        $builder->add('choice', 'text', array('label' => 'Choice'));
     }
 }

@@ -3,6 +3,7 @@
     {{ form_row(form.widget_id)}}
 
     {{ form_row(form.widget_choices) }}
+    <a href="#" class="add-widget-choice-trigger">Add</a>
 
     {{ form_row(form.widget_attribute) }}
 
@@ -19,38 +20,5 @@
 
         widgetBuilder.initForm();
     });
-
-    // temporary for now, does not know yet where to put this or if im in the right direction,,:/
-
-    /**
-     * Adds form row collection
-     */
-
-    /**
-    var addFormRowInCollection = function($_collectionHolder) {
-        var prototype = $_collectionHolder.data('prototype');
-        var index = $_collectionHolder.data('index');
-        var newForm = prototype.replace(/__name__/g, index);
-
-        $_collectionHolder.data('index', index + 1);
-        $_collectionHolder.append($(newForm));
-    }
-
-    $('.add-to-collection').on('click', function(e) {
-        e.preventDefault();
-
-        var collectionHolder = $('.collection-container');
-        collectionHolder.data('index', collectionHolder.find('.collection-field-container').length);
-
-        addFormRowInCollection(collectionHolder);
-    });
-
-    $('.collection-container').on('click', '.collection-delete-item', function(e) {
-        e.preventDefault();
-        $(this).closest('.collection-field-container').hide().html('');
-    });
-    **/
-    // end of widget_choices
-
 })(jQuery);
 </script>

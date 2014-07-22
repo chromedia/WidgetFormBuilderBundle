@@ -6,7 +6,7 @@ services:
         tags:
             - { name: form.type, alias: chromedia_available_widget_choice }
 
-    form.cwfb.chromedia_widget_choices:
+    form.cwfb.chromedia_widget_choice:
         class: Chromedia\WidgetFormBuilderBundle\Form\WidgetChoiceFieldType
         tags:
             - { name: form.type, alias: chromedia_widget_choice }
