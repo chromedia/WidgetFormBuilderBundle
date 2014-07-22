@@ -27,7 +27,15 @@ class Configuration implements ConfigurationInterface
         // add widgets option
         $this->addCoreWidgets($rootNode);
 
+        // add custom widgets option
         $this->addCustomWidgets($rootNode);
+
+        $rootNode->children()
+            ->scalarNode('form_template')
+                ->defaultValue("ChromediaWidgetFormBuilderBundle:Form:form_template.html.twig")
+                ->cannotBeEmpty()
+            ->end()
+        ->end();
 
         return $treeBuilder;
     }
