@@ -3,6 +3,7 @@ namespace Chromedia\WidgetFormBuilderBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Chromedia\WidgetFormBuilderBundle\Form\Transformer\JsonMetadataTransformer;
 class WidgetBuilderFormType extends AbstractType
 {
     const NAME = 'chromedia_widget_builder_form_type';
@@ -28,5 +29,7 @@ class WidgetBuilderFormType extends AbstractType
         	'type' => 'chromedia_widget_attribute',
             'allow_add' => true
         ));
+
+        $builder->addModelTransformer(new JsonMetadataTransformer());
     }
 }

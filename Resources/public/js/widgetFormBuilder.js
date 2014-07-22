@@ -6,11 +6,19 @@ var WidgetFormBuilder = function(options){
     
     this.form = options.form;
     
-    this.formElements = {
-        widget_id: this.form.find($('#chromedia_widget_builder_form_type_widget_id')),
-        widget_choices: this.form.find($('#chromedia_widget_builder_form_type_widget_choices')),
-        widget_attribute: this.form.find($('#chromedia_widget_builder_form_type_widget_attribute'))
-    };
+    if (!options.formElements) {
+        // build defaults
+        this.formElements = {
+            widget_id: this.form.find($('#chromedia_widget_builder_form_type_widget_id')),
+            widget_choices: this.form.find($('#chromedia_widget_builder_form_type_widget_choices')),
+            widget_attribute: this.form.find($('#chromedia_widget_builder_form_type_widget_attribute'))
+        };
+    }
+    else {
+        // TODO: validate
+        this.formElements = options.formElements;
+    }
+    
 };
 
 WidgetFormBuilder.prototype.initForm = function(){
