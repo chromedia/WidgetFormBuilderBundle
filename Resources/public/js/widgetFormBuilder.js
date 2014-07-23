@@ -47,7 +47,12 @@ WidgetFormBuilder.prototype.bindEvents = function(){
 
     this.form.on('click', '.remove-widget-choice-trigger, .remove-widget-attribute-trigger', function(e) {
         e.preventDefault();
-        $(this).closest('.form-group').hide().html('');
+
+        if ($(this).closest('.form-group').siblings('.form-group:visible').length == 0) {
+            alert('At least one value is required.');
+        } else {
+            $(this).closest('.form-group').hide().html('');
+        }
     });
 
     this.formElements.widget_id.off('change').on('change', function(e) {
@@ -66,10 +71,10 @@ var WidgetUtil = (function($) {
         addRowInCollection : function(collectionHolder) {
             var prototype = collectionHolder.data('prototype');
             var index = collectionHolder.find('.form-group').length;
-            var newForm = prototype.replace(/__name__/g, index);
+            var newForm = $(prototype.replace(/__name__/g, index));
 
             collectionHolder.data('index', index + 1);
-            collectionHolder.append($(newForm));
+            collectionHolder.append(newForm);
         }, 
 
         displayWidgetChoices : function(widget, widgetChoices) {
