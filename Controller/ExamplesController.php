@@ -10,6 +10,13 @@ class ExamplesController extends Controller
     {
         $form = $this->createForm(new WidgetBuilderFormType());
 
+        if ($request->isMethod('POST')) {
+        	$form->submit($request);
+//         	var_dump($form->getData());
+//         	var_dump(json_decode($form->getData()));
+
+        }
+
         return $this->render('ChromediaWidgetFormBuilderBundle:Examples:index.html.twig', array(
         	'form' => $form->createView()
         ));
