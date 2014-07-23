@@ -25,25 +25,24 @@ WidgetFormBuilder.prototype.initForm = function(){
     var self = this;
 
     // TODO: Check if widget has choices
-    var choicePrototype = this.formElements.widget_choices.data('prototype');
-    this.formElements.widget_choices.append(choicePrototype);
-
+    // build widget choices
+    WidgetUtil.addRowInCollection(self.formElements.widget_choices);
     this.form.on('click', '.add-widget-choice-trigger', function(e) {
         e.preventDefault();
 
         WidgetUtil.addRowInCollection(self.formElements.widget_choices);
     });
 
-    //build widget attributes
-    var attributePrototype = this.formElements.widget_attribute.data('prototype');
-    this.formElements.widget_attribute.append(attributePrototype);
 
+    // build widget attributes
+    WidgetUtil.addRowInCollection(self.formElements.widget_attribute);
     this.form.on('click', '.add-widget-attribute-trigger', function(e) {
         e.preventDefault();
 
         WidgetUtil.addRowInCollection(self.formElements.widget_attribute);
     });
 
+    // bind remove event
     this.form.on('click', '.remove-widget-choice-trigger, .remove-widget-attribute-trigger', function(e) {
         e.preventDefault();
         $(this).closest('.form-group').hide().html('');
