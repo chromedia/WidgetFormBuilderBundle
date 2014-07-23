@@ -1,13 +1,3 @@
-{% block chromedia_widget_choice_widget %}
-{% spaceless %}
-    {{ form_widget(form)}}
-    <a href="#" class="add-widget-choice-trigger">Add</a> |
-    <a href="#" class="remove-widget-choice-trigger">Remove</a>
-
-
-{% endspaceless %}
-{% endblock %}
-
 {% block chromedia_widget_attribute_widget %}
 {% spaceless %}
     {{ form_widget(form.key) }}
@@ -21,7 +11,9 @@
 {% block chromedia_widget_choice_row %}
 {% spaceless %}
     <div class="form-group">
-        {{ block('chromedia_widget_choice_widget') }}
+        {{ form_widget(form)}}
+        <a href="#" class="add-widget-choice-trigger">Add</a> |
+        <a href="#" class="remove-widget-choice-trigger">Remove</a>
     </div>
 {% endspaceless %}
 {% endblock %}
