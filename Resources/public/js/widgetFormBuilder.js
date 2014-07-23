@@ -26,9 +26,7 @@ WidgetFormBuilder.prototype.initForm = function(){
     this.bindEvents();
 
     WidgetUtil.displayWidgetChoices(this.formElements.widget_id, this.formElements.widget_choices);
-
-    WidgetUtil.addRowInCollection(this.formElements.widget_choices);
-    WidgetUtil.addRowInCollection(this.formElements.widget_attribute);
+    WidgetUtil.initWidgetAttribute(this.formElements.widget_attribute);
 };
 
 
@@ -74,11 +72,22 @@ var WidgetUtil = (function($) {
             collectionHolder.append($(newForm));
         }, 
 
-        displayWidgetChoices : function(widget, widget_choices) {
+        displayWidgetChoices : function(widget, widgetChoices) {
             if (this.isChoiceWidget(widget.val())) {
-                widget_choices.closest('.form-group').show();
+                if (widgetChoices.find('.form-group').length == 0) {
+                    WidgetUtil.addRowInCollection(widgetChoices);
+                }
+
+                widgetChoices.closest('.form-group').show();
             } else {
-                widget_choices.closest('.form-group').hide();
+                widgetChoices.find('.form-group').remove();
+                widgetChoices.closest('.form-group').hide();
+            }
+        },
+
+        initWidgetAttribute : function(widgetAttribute) {
+            if (widgetAttribute.find('.form-group').length == 0) {
+               WidgetUtil.addRowInCollection(widgetAttribute); 
             }
         },
 
