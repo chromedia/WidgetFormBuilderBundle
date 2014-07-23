@@ -8,6 +8,7 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Yaml\Yaml;
 use Chromedia\WidgetFormBuilderBundle\DependencyInjection\Core\CoreWidgets;
+use Chromedia\WidgetFormBuilderBundle\DependencyInjection\Core\CoreConstraints;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
@@ -29,6 +30,9 @@ class Configuration implements ConfigurationInterface
 
         // add custom widgets option
         $this->addCustomWidgets($rootNode);
+
+        // constraints
+        $this->addConstraints($rootNode);
 
         $rootNode->children()
             ->scalarNode('form_template')
@@ -68,6 +72,16 @@ class Configuration implements ConfigurationInterface
         ->end();
     }
 
+    private function addConstraints(ArrayNodeDefinition $node)
+    {
+        $constraintsNode = $node->children()->arrayNode('core_constraints');
+        foreach (CoreConstraints::all() as $constraintKey => $data) {
+            $constraintsNode->append($this->createConstraintNode($constraintKey, $data));
+        }
+        $constraintsNode->end();
+
+    }
+
     private function createCoreWidget($widgetId, $widgetProperty)
     {
         $treeBuilder = new TreeBuilder();
@@ -89,7 +103,23 @@ class Configuration implements ConfigurationInterface
         ->end();
 
         return $root;
+    }
 
+    private function createConstraintNode($key, $data)
+    {
+        $treeBuilder = new TreeBuilder();
+        $root = $treeBuilder->root($key);
+        $root
+            ->children()
+                ->scalarNode('class')
+                    ->defaultValue($data['class'])
+                    ->cannotBeEmpty()
+                ->end()
+                ->scalarNode('name')
+                    ->defaultValue($data['name'])
+                ->end()
+            ->end();
 
+        return $root;
     }
 }

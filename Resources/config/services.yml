@@ -1,0 +1,7 @@
+services:
+    service.cwfb.twig_extension:
+        class: Chromedia\WidgetFormBuilderBundle\Twig\WidgetFormBuilderTwigExtension
+        calls:
+            - [setConstraintFlattenedOptions, [%_cwfb.widget_flat_constraint_options%]]
+        tags:
+            - { name: twig.extension }

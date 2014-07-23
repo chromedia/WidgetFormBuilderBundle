@@ -43,6 +43,29 @@ class ChromediaWidgetFormBuilderExtension extends Extension
         }
         $container->setParameter($this->getInternalAlias().'.widget_selection_choices', $widgetSelectionChoices);
 
+        // process constraints and create _cwfb.widget_constraint_choices
+        $coreConstraints = $config['core_constraints'];
+        $widgetConstraintChoices = array();
+        $widgetFlatConstraintOptions = array();
+        foreach ($coreConstraints as $id => &$constraintData) {
+            $widgetConstraintChoices[$id] = $constraintData['name'];
+            $obj = new \ReflectionClass($constraintData['class']);
+            $options = $obj->getDefaultProperties();
+            unset($options['groups']);
+            $constraintData['options'] = array_keys($options);
+            $widgetFlatConstraintOptions[$id] =$constraintData['options'];
+        }
+
+        // _cwfb.widget_constraint_choices will be used in the dropdown for selecting a constraint
+        $container->setParameter($this->getInternalAlias().'.widget_constraint_choices', $widgetConstraintChoices);
+
+        // _cwfb.widget_constraints
+        $container->setParameter($this->getInternalAlias().'.widget_constraints', $coreConstraints);
+
+        // _cwfb.widget_flat_constraint_options
+        $container->setParameter($this->getInternalAlias().'.widget_flat_constraint_options', $widgetFlatConstraintOptions);
+
+
         // _cwfb.form_template
         $container->setParameter($this->getInternalAlias().'.form_template', $config['form_template']);
     }

@@ -26,3 +26,10 @@
 {% endspaceless %}
 {% endblock %}
 
+{% block chromedia_constraint_choice_widget %}
+{% spaceless %}
+    {% set attr = attr | merge({"data-constraint-options": cwfb_widget_constraint_flattened_options | json_encode })%}
+    {{ block('choice_widget') }}
+{% endspaceless %}
+{% endblock %}
+

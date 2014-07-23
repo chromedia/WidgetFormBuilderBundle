@@ -22,3 +22,17 @@ services:
         class: Chromedia\WidgetFormBuilderBundle\Form\WidgetAttributeFieldType
         tags:
             - { name: form.type, alias: chromedia_widget_attribute }
+
+    ## for chromedia_widget_builder_form_type.widget_constraints
+    form.cwfb.chromedia_widget_constraint:
+        class: Chromedia\WidgetFormBuilderBundle\Form\WidgetConstraintFieldType
+        tags:
+            - { name: form.type, alias: chromedia_widget_constraint }
+
+    ## dropdown of available constraints
+    form.cwfb.chromedia_constraint_choice:
+        class: Chromedia\WidgetFormBuilderBundle\Form\ConstraintChoiceFieldType
+        calls:
+            - [setChoices, [%_cwfb.widget_constraint_choices%]]
+        tags:
+            - { name: form.type, alias: chromedia_constraint_choice }

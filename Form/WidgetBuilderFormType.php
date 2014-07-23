@@ -30,6 +30,11 @@ class WidgetBuilderFormType extends AbstractType
             'allow_add' => true
         ));
 
+        $builder->add('widget_constraints', 'collection', array(
+            'type' => 'chromedia_widget_constraint',
+            'allow_add' => true
+        ));
+
         $builder->addModelTransformer(new JsonMetadataTransformer());
     }
 }
