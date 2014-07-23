@@ -1,6 +1,6 @@
 {% block chromedia_widget_choice_widget %}
 {% spaceless %}
-    <input type="text" placeholder="Choice" name="__name__">
+    <input type="text" placeholder="Choice" name="chromedia_widget_choice[choice][__name__]">
      <a href="#" class="add-widget-choice-trigger">Add</a> |
     <a href="#" class="remove-widget-choice-trigger">Remove</a>
 {% endspaceless %}
@@ -8,11 +8,27 @@
 
 {% block chromedia_widget_attribute_widget %}
 {% spaceless %}
-    <input type="text" placeholder="Key" name="key-__name__">
-    <input type="text" placeholder="Value" name="value-__name__">
+    <input type="text" placeholder="Key" name="chromedia_widget_attribute[key][__name__]">
+    <input type="text" placeholder="Value" name="chromedia_widget_attribute[value][__name__]">
     
-    <a href="#" class="add-widget-choice-trigger">Add</a> |
-    <a href="#" class="remove-widget-choice-trigger">Remove</a>
+    <a href="#" class="add-widget-attribute-trigger">Add</a> |
+    <a href="#" class="remove-widget-attribute-trigger">Remove</a>
+{% endspaceless %}
+{% endblock %}
+
+{% block chromedia_widget_choice_row %}
+{% spaceless %}
+    <div class="form-group">
+        {{ block('chromedia_widget_choice_widget') }}
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block chromedia_widget_attribute_row %}
+{% spaceless %}
+    <div class="form-group">
+        {{ block('chromedia_widget_attribute_widget') }}
+    </div>
 {% endspaceless %}
 {% endblock %}
 
