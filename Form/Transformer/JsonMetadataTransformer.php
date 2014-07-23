@@ -18,6 +18,7 @@ class JsonMetadataTransformer implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
-        return json_encode($value);
+        $json =  json_encode($value);
+        return $json;
     }
 }

@@ -1,11 +1,11 @@
-<form id="{{ form.vars.id }}">
+<form id="{{ form.vars.id }}" method="post">
 
     {{ form_row(form.widget_id)}}
 
     {{ form_row(form.widget_choices) }}
 
     {{ form_row(form.widget_attribute) }}
-
+    <button type="submit">Submit</button>
 </form>
 
 <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>

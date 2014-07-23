@@ -21,10 +21,15 @@ class WidgetChoiceFieldType extends AbstractType
         ));
     }
 
+    public function getParent()
+    {
+        return 'text';
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('choice', 'text', array('label' => false));
+        //$builder->add('choice', 'text', array('label' => false));
 
-        $builder->addModelTransformer(new JsonMetadataTransformer());
+        //$builder->addModelTransformer(new JsonMetadataTransformer());
     }
 }
