@@ -26,13 +26,8 @@ var WidgetFormBuilder = function(options){
 WidgetFormBuilder.prototype.initForm = function(){
     this.bindEvents();
 
-    // WidgetUtil.displayWidgetChoices(this.formElements.widget_id, this.formElements.widget_choices);
-    // WidgetUtil.initWidgetAttribute(this.formElements.widget_attribute);
-
-    // temporary
-    // WidgetUtil.addRowInCollection(this.formElements.widget_constraints);
-    // WidgetUtil.populateConstraintOptions(this.formElements.widget_constraints, this.constraintOptions);
-
+    WidgetUtil.displayWidgetChoices(this.formElements.widget_id, this.formElements.widget_choices);
+    WidgetUtil.initWidgetAttribute(this.formElements.widget_attribute);
 
     WidgetUtil.initWidgetConstraints(this.formElements.widget_constraints, this.constraintOptions);
 };
