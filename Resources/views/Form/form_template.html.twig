@@ -8,16 +8,6 @@
 {% endspaceless %}
 {% endblock %}
 
-{% block chromedia_widget_choice_row %}
-{% spaceless %}
-    <div class="form-group">
-        {{ form_widget(form)}}
-        <a href="#" class="add-widget-choice-trigger">Add</a> |
-        <a href="#" class="remove-widget-choice-trigger">Remove</a>
-    </div>
-{% endspaceless %}
-{% endblock %}
-
 {% block chromedia_widget_attribute_row %}
 {% spaceless %}
     <div class="form-group">
@@ -26,9 +16,49 @@
 {% endspaceless %}
 {% endblock %}
 
+{% block chromedia_widget_choice_row %}
+{% spaceless %}
+    <div class="form-group">
+        {{ form_widget(form) }}
+        <a href="#" class="add-widget-choice-trigger">Add</a> |
+        <a href="#" class="remove-widget-choice-trigger">Remove</a>
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block chromedia_widget_constraint_row %}
+{% spaceless %}
+    <div class="form-group widget-constraint">
+        {{ form_row(form.constraint_id) }}
+        {{ form_row(form.constraint_options) }}
+
+        <a href="#" class="add-widget-constraint-trigger">Add</a> |
+        <a href="#" class="remove-widget-constraint-trigger">Remove</a>
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block chromedia_constraint_option_row %}
+{% spaceless %}
+    <div class="form-group">
+        {% if form.vars.value %}
+            {# I don't think name is appropriate as label..this is temporary! #}
+            <label>{{ form.vars.name }}</label>
+        {% else %}
+            <label></label>
+        {% endif %}
+        
+        {{ form_widget(form) }}
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+
 {% block chromedia_constraint_choice_widget %}
 {% spaceless %}
+ 
     {% set attr = attr | merge({"data-constraint-options": cwfb_widget_constraint_flattened_options | json_encode })%}
+  
     {{ block('choice_widget') }}
 {% endspaceless %}
 {% endblock %}

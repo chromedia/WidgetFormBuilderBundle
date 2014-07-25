@@ -1,11 +1,14 @@
 <form id="{{ form.vars.id }}" method="post">
+    {#{ form_row(form.widget_constraints) }#}
 
-    {{ form_widget(form.widget_constraints.vars.prototype)}}
+    {#{{ form_widget(form.widget_constraints.vars.prototype)}}#}
     {{ form_rest(form)}}
+
     <button type="submit">Submit</button>
 </form>
 
 <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<!-- <script src="http://www.yky.dev/jquery.js"></script> -->
 <script src="{{ asset('bundles/chromediawidgetformbuilder/js/widgetFormBuilder.js') }}"></script>
 <script type="text/javascript">
 (function(){

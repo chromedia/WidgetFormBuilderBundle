@@ -36,3 +36,9 @@ services:
             - [setChoices, [%_cwfb.widget_constraint_choices%]]
         tags:
             - { name: form.type, alias: chromedia_constraint_choice }
+
+    ## list of constraint properties
+    form.cwfb.chromedia_constraint_option:
+        class: Chromedia\WidgetFormBuilderBundle\Form\ConstraintPropertyFieldType
+        tags:
+            - { name: form.type, alias: chromedia_constraint_option }

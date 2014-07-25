@@ -18,7 +18,9 @@ class WidgetConstraintFieldType extends AbstractType
         ));
 
         $builder->add('constraint_options', 'collection', array(
-        	'type' => 'chromedia_constraint_option'
+        	'type' => 'chromedia_constraint_option',
+            'allow_add' => true,
+            'prototype_name' => '__constraint_option_name__',
         ));
     }
 
