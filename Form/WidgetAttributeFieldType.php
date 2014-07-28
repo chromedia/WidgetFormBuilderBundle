@@ -4,7 +4,7 @@ namespace Chromedia\WidgetFormBuilderBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Chromedia\WidgetFormBuilderBundle\Form\Transformer\JsonMetadataTransformer;
+use Chromedia\WidgetFormBuilderBundle\Form\Transformer\WidgetAttributeTransformer;
 
 class WidgetAttributeFieldType extends AbstractType
 {
@@ -26,6 +26,6 @@ class WidgetAttributeFieldType extends AbstractType
         $builder->add('key', 'text');
         $builder->add('value', 'text');
 
-        //$builder->addModelTransformer(new JsonMetadataTransformer());
+        $builder->addModelTransformer(new WidgetAttributeTransformer());
     }
 }
