@@ -62,7 +62,7 @@ WidgetFormBuilder.prototype.populateWidgetChoices = function(){
     // initialize widget choices
     var initWidgetChoices = function() {
         if (WidgetUtil.isChoiceWidget(self.formElements.widget_id.val())) {
-            widgetChoice.displayWidgetChoices();
+            widgetChoice.displayChoices();
         } else {
             widgetChoice.find('.form-group').remove();
             widgetChoice.closest('.form-group').hide();
