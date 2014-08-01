@@ -16,8 +16,6 @@ class WidgetAttributeTransformer implements DataTransformerInterface
      */
     public function transform($widgetAttribute)
     {
-        $widgetAttribute = \json_decode($widgetAttribute, true);
-
         return array(
             self::KEY_INDEX   => $widgetAttribute[self::KEY_INDEX],
             self::VALUE_INDEX => $widgetAttribute[self::VALUE_INDEX]
@@ -31,6 +29,6 @@ class WidgetAttributeTransformer implements DataTransformerInterface
      */
     public function reverseTransform($widgetAttribute)
     {
-        return json_encode(array($widgetAttribute[self::KEY_INDEX] => $widgetAttribute[self::VALUE_INDEX]));
+        return array($widgetAttribute[self::KEY_INDEX] => $widgetAttribute[self::VALUE_INDEX]);
     }
 }
