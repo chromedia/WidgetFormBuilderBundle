@@ -24,110 +24,212 @@ var WidgetFormBuilder = function(options){
 
 
 WidgetFormBuilder.prototype.initForm = function(){
-    this.bindEvents();
-
-    WidgetUtil.displayWidgetChoices(this.formElements.widget_id, this.formElements.widget_choices);
-    WidgetUtil.initWidgetAttribute(this.formElements.widget_attribute);
-
-    WidgetUtil.initWidgetConstraints(this.formElements.widget_constraints, this.constraintOptions);
-};
-
-
-WidgetFormBuilder.prototype.bindEvents = function(){
     var self = this;
 
-    this.form.on('click', '.add-widget-choice-trigger', function(e) {
-        e.preventDefault();
-
-        WidgetUtil.addRowInCollection(self.formElements.widget_choices);
-    });
-
-    this.form.on('click', '.add-widget-attribute-trigger', function(e) {
-        e.preventDefault();
-
-        WidgetUtil.addRowInCollection(self.formElements.widget_attribute);
-    });
-
-    // Adds new constraint
-    this.form.on('click', '.add-widget-constraint-trigger', function(e) {
-        e.preventDefault();
-
-        WidgetUtil.addRowInCollection(self.formElements.widget_constraints);
-        
-        var constraintType = self.formElements.widget_constraints.find('select:last').val();
-        var optionsHolder = self.formElements.widget_constraints.find('div[data-prototype]:last');
-
-        WidgetUtil.populateConstraintOptions(optionsHolder, WidgetUtil.constraintProperties[constraintType]);
-    });
-
-    // Handles removal of collection row
-    this.form.on('click', '.remove-widget-choice-trigger, .remove-widget-attribute-trigger, .remove-widget-constraint-trigger', function(e) {
-        e.preventDefault();
-
-        if ($(this).closest('.form-group').siblings('.form-group:visible').length == 0) {
-            alert('At least one value is required.');
-        } else {
-            $(this).closest('.form-group').hide().html('');
-        }
-    });
-
-    // Handles changing of widget type
     this.formElements.widget_id.off('change').on('change', function(e) {
         e.preventDefault();
 
-        WidgetUtil.displayWidgetChoices($(this), self.formElements.widget_choices);
+        if (WidgetUtil.isChoiceWidget($(this).val())) {
+            self.formElements.widget_choices.displayChoices();
+        }
     });
 
-    // Handles changing of constraint type
-    this.formElements.widget_constraints.off('change').on('change', 'select', function(e) {
-        e.preventDefault();
+    this.populateWidgetChoices();
+    this.populateWidgetAttributes();
+    this.populateWidgetConstraints();
+};
 
-        var constraintType = $(this).val();
+// widget choices
+WidgetFormBuilder.prototype.populateWidgetChoices = function(){
+    var self = this;
+    var widgetChoice = this.formElements.widget_choices;
 
-        if (constraintType in WidgetUtil.constraintProperties) {
-            var constraintOptionsHolder = $(this).closest('.widget-constraint').find('div[data-prototype]');
-            
-            WidgetUtil.populateConstraintOptions(constraintOptionsHolder, WidgetUtil.constraintProperties[constraintType]);
+    // add events
+    var addEvents = function() {
+        self.form.on('click', '.add-widget-choice-trigger', function(e) {
+            e.preventDefault();
+
+            widgetChoice.addCollectionRow();
+        });
+
+        self.form.on('click', '.remove-widget-choice-trigger', function(e) {
+            e.preventDefault();
+
+            $(this).removeCollectionRow({ isRequired : true });
+        });
+    };
+
+    // initialize widget choices
+    var initWidgetChoices = function() {
+        if (WidgetUtil.isChoiceWidget(self.formElements.widget_id.val())) {
+            widgetChoice.displayWidgetChoices();
+        } else {
+            widgetChoice.find('.form-group').remove();
+            widgetChoice.closest('.form-group').hide();
         }
 
-    });
+        addEvents();
+    }
+
+    initWidgetChoices();
 }
 
-// 
+// Widget atribute
+WidgetFormBuilder.prototype.populateWidgetAttributes = function(){
+    var widgetAttribute = this.formElements.widget_attribute;
+    var self = this;
+
+    // add events
+    var addEvents = function() {
+        self.form.on('click', '.add-widget-attribute-trigger', function(e) {
+            e.preventDefault();
+
+            widgetAttribute.addCollectionRow();
+        });
+
+        self.form.on('click', '.remove-widget-attribute-trigger', function(e) {
+            e.preventDefault();
+
+            $(this).removeCollectionRow({ isRequired : false });
+        });
+    }
+
+    // do displaying
+    var initWidgetAttributes = function() {
+        if (widgetAttribute.find('.form-group').length == 0) {
+            widgetAttribute.addCollectionRow();
+        }
+
+        addEvents();
+    }
+
+    initWidgetAttributes();
+}
+
+// Widget constraints
+WidgetFormBuilder.prototype.populateWidgetConstraints = function(){
+    var self = this;
+    var widgetConstraints = this.formElements.widget_constraints;
+    var constraintOptions = {};
+
+    var initWidgetConstraints = function(form, formElements) {
+        if (widgetConstraints.find('.form-group').length == 0) {
+            widgetConstraints.addCollectionRow();
+
+            var constraintType = widgetConstraints.find('select').val();
+            var optionsHolder = widgetConstraints.find('div[data-prototype]');
+            var options = widgetConstraints.find('select').attr('data-constraint-options');
+
+            constraintOptions = $.parseJSON(options);
+
+            populateConstraintOptions(optionsHolder, constraintOptions[constraintType]);
+        } else {
+            var options = widgetConstraints.find('select').attr('data-constraint-options');
+
+            constraintOptions = $.parseJSON(options); 
+        } 
+
+        addEvents();
+    };
+
+    var populateConstraintOptions = function(constraintOptionsHolder, availableOptions) {
+        constraintOptionsHolder.find('.form-group').remove();
+
+        $.each(availableOptions, function(index, value) {
+            var constraintOptionPrototype = constraintOptionsHolder.data('prototype');
+            var field = $(WidgetUtil.replacePrototypeName(constraintOptionPrototype, '__constraint_option_name__', value))
+            
+            field.find('label').html(value);
+
+            constraintOptionsHolder.append(field);
+        });
+    };
+
+    var addEvents = function() {
+        self.form.on('click', '.add-widget-constraint-trigger', function(e) {
+            e.preventDefault();
+
+            widgetConstraints.addCollectionRow();
+            
+            var constraintType = widgetConstraints.find('select:last').val();
+            var optionsHolder = widgetConstraints.find('div[data-prototype]:last');
+            var options = constraintOptions[constraintType];
+
+            populateConstraintOptions(optionsHolder, options);
+        });
+
+        self.form.on('click', '.remove-widget-constraint-trigger', function(e) {
+            e.preventDefault();
+
+            $(this).removeCollectionRow({ isRequired : false });
+        });
+
+        // Handles changing of constraint type
+        widgetConstraints.off('change').on('change', 'select', function(e) {
+            e.preventDefault();
+
+            var constraintType = $(this).val();
+
+            if (constraintType in constraintOptions) {
+                var constraintOptionsHolder = $(this).closest('.widget-constraint').find('div[data-prototype]');
+                var options = constraintOptions[constraintType];
+
+                populateConstraintOptions(constraintOptionsHolder, options);
+            }
+        });
+    };
+
+    initWidgetConstraints();
+}
+
+
+// Reusable by different widget 
+$.fn.addCollectionRow = function(options) {
+    var props = $.extend({
+        'prototypeName' : '__name__'
+    }, options);
+
+    var prototype = $(this).data('prototype');
+    var index = this.children('.form-group').length;
+    var newForm = $(WidgetUtil.replacePrototypeName(prototype, props.prototypeName, index));
+  
+    this.data('index', index + 1);
+    this.append(newForm);
+
+    return this;
+},
+
+$.fn.removeCollectionRow = function(options) {
+    var props = $.extend({
+        'onRemoveDone' : function() {},
+        'isRequired' : true
+    }, options);
+
+    if (props.isRequired && $(this).closest('.form-group').siblings('.form-group:visible').length == 0) {
+        alert('At least one value is required.');
+    } else {
+        if ($(this).closest('.form-group').siblings('.form-group:visible').length == 0) {
+            // temporary only. Just add button for us to add values.
+            //$(this).closest('.form-group').append('<a href="#" class="add-widget-attribute-trigger">Add</a>')
+        }
+
+        $(this).closest('.form-group').hide().html('');
+    }
+}
+
+$.fn.displayChoices = function() {
+    if ($(this).find('.form-group').length == 0) {
+        $(this).addCollectionRow();
+    }
+
+    $(this).closest('.form-group').show();
+}
 
 
 // Provides utility methods for widgets 
 var WidgetUtil = (function($) {
     return {
         choiceWidgets : ['radio', 'choice', 'checkbox'],
-
-        constraintProperties : {},
-
-        addRowInCollection : function(collectionHolder, prototypeName) {
-            if (typeof prototypeName === "undefined" || !prototypeName) {
-                prototypeName = '__name__';
-            }
-           
-            var prototype = collectionHolder.data('prototype');
-            var index = collectionHolder.children('.form-group').length;
-            var newForm = $(WidgetUtil.replacePrototypeName(prototype, prototypeName, index));
-          
-            collectionHolder.data('index', index + 1);
-            collectionHolder.append(newForm);
-        },
-
-        populateConstraintOptions : function(constraintOptionsHolder, availableOptions) {
-            constraintOptionsHolder.find('.form-group').remove();
-
-            $.each(availableOptions, function(index, value) {
-                var constraintOptionPrototype = constraintOptionsHolder.data('prototype');
-                var field = $(WidgetUtil.replacePrototypeName(constraintOptionPrototype, '__constraint_option_name__', value))
-                
-                field.find('label').html(value);
-
-                constraintOptionsHolder.append(field);
-            });
-        },
 
         replacePrototypeName : function(prototype, prototypeName, value) {
             var regEx = new RegExp(prototypeName, 'g');
@@ -136,48 +238,9 @@ var WidgetUtil = (function($) {
             return prototype;
         },
 
-        displayWidgetChoices : function(widget, widgetChoices) {
-            if (this.isChoiceWidget(widget.val())) {
-                if (widgetChoices.find('.form-group').length == 0) {
-                    WidgetUtil.addRowInCollection(widgetChoices);
-                }
-
-                widgetChoices.closest('.form-group').show();
-            } else {
-                widgetChoices.find('.form-group').remove();
-                widgetChoices.closest('.form-group').hide();
-            }
-        },
-
-        initWidgetAttribute : function(widgetAttribute) {
-            if (widgetAttribute.find('.form-group').length == 0) {
-               WidgetUtil.addRowInCollection(widgetAttribute); 
-            }
-        },
-
-        initWidgetConstraints : function(widgetConstraints, constraintProperties) {
-            if (widgetConstraints.find('.form-group').length == 0) {
-                WidgetUtil.addRowInCollection(widgetConstraints);
-                WidgetUtil.constraintProperties = $.parseJSON(widgetConstraints.find('select').attr('data-constraint-options'));
-
-                var constraintType = widgetConstraints.find('select').val();
-                var optionsHolder = widgetConstraints.find('div[data-prototype]');
-
-                WidgetUtil.populateConstraintOptions(optionsHolder, WidgetUtil.constraintProperties[constraintType]);
-            } else {
-               WidgetUtil.constraintProperties = $.parseJSON(widgetConstraints.find('select').attr('data-constraint-options')); 
-           } 
-        },
-
         isChoiceWidget : function(widget) {
             return $.inArray(widget, this.choiceWidgets) != -1;
         },
     }
 })(jQuery);
                                                                                                                                                                                                                        
-
-
-
-
-
-
