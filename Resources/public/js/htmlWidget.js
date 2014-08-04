@@ -1,9 +1,4 @@
 var CWFB_HtmlWidget = function(metadata){
-    
-    // //sample
-    // metadata = $.parseJSON('{"widget_id":"text","widget_choices":[],"widget_attribute":[],"widget_constraints":[]}');
-    // //sample
-
     this.widgetId = metadata.widget_id;
     this.widgetChoices = metadata.widget_choices;
     this.widgetAttributes = metadata.widget_attribute;
@@ -19,6 +14,8 @@ CWFB_HtmlWidget.prototype.build = function(){
     this
         ._buildChoices()
         ._buildAttributes();
+
+    return this;
 };
 
 CWFB_HtmlWidget.prototype._buildElement = function() {
@@ -65,68 +62,74 @@ CWFB_ChoiceWidget.prototype._buildChoices = function() {
 };
 //--- End choice widget
 
-
-//--- Checkbox widget
-var CWFB_CheckboxWidget = function(a, b) {
+//--- Expanded CHoices
+var CWFB_ExpandedChoiceWidget = function(a, b, choiceType) {
     CWFB_HtmlWidget.call(this, a);
+
+    this.choiceType = choiceType;
 };
 
-CWFB_CheckboxWidget.prototype = Object.create(CWFB_HtmlWidget.prototype);
+CWFB_ExpandedChoiceWidget.prototype = Object.create(CWFB_HtmlWidget.prototype);
 
-CWFB_CheckboxWidget.prototype._buildElement = function() {
-    this.el = document.createElement('span');
+CWFB_ExpandedChoiceWidget.prototype._buildElement = function() {
+    this.el = document.createElement('div');
 };
 
-CWFB_CheckboxWidget.prototype._buildChoices = function() {
-    
+CWFB_ExpandedChoiceWidget.prototype._buildChoices = function() {
     var elDom = this.el;
+    var type = this.choiceType;
 
-    this.widgetChoices.forEach(function(choice) {
-        var choice = document.createTextNode(choice);
-        var checkbox = document.createElement('input');
+    this.widgetChoices.forEach(function(item) {
+        var element = document.createElement('input');
 
-        checkbox.type = 'checkbox';
-        checkbox.name = 'cwfb_checkbox';
-        checkbox.value = choice;
-        checkbox.appendChild(' '+choice);
+        element.type = type;
+        element.name = 'cwfb_'+type;
+        element.value = item;
 
-        elDom.appendChild(checkbox);
+        var label = document.createElement('label');
+        label.appendChild(document.createTextNode(item));
+
+        elDom.appendChild(element);
+        elDom.appendChild(label);
     });
 
     return this;
 };
+
+CWFB_ExpandedChoiceWidget.prototype._buildAttributes = function() {
+    
+    var elDom = this.el;
+
+    this.widgetAttributes.forEach(function(item, key){
+        var inputs = elDom.getElementsByTagName('input');
+
+        for(var ctr = 0; ctr < inputs.length; ctr++) {
+            inputs[ctr].setAttribute(item.key, item.value);
+        }
+    });
+    
+    return this;
+};
+//--- End of expanded choices
+
+
+
+//--- Checkbox widget
+var CWFB_CheckboxWidget = function(a, b) {
+    CWFB_ExpandedChoiceWidget.call(this, a, b, 'checkbox');
+};
+
+CWFB_CheckboxWidget.prototype = Object.create(CWFB_ExpandedChoiceWidget.prototype);
+
 //--- End checkbox widget
 
 
 //--- Radio button widget
 var CWFB_RadioButtonWidget = function(a, b) {
-    CWFB_HtmlWidget.call(this, a);
+    CWFB_ExpandedChoiceWidget.call(this, a, b, 'radio');
 };
 
-CWFB_RadioButtonWidget.prototype = Object.create(CWFB_HtmlWidget.prototype);
-
-CWFB_RadioButtonWidget.prototype._buildElement = function() {
-    this.el = document.createElement('span');
-};
-
-CWFB_RadioButtonWidget.prototype._buildChoices = function() {
-    
-    var elDom = this.el;
-
-    this.widgetChoices.forEach(function(choice) {
-        var choice = document.createTextNode(choice);
-        var radioButton = document.createElement('input');
-
-        radioButton.type = 'radio';
-        radioButton.name = 'cwfb_radio';
-        radioButton.value = choice;
-        radioButton.appendChild(' '+choice);
-
-        elDom.appendChild(radioButton);
-    });
-
-    return this;
-};
+CWFB_RadioButtonWidget.prototype = Object.create(CWFB_ExpandedChoiceWidget.prototype);
 //--- End radio button widget
 
 
@@ -155,3 +158,4 @@ CWFB_TextareaWidget.prototype._buildElement = function() {
     this.el = document.createElement('textarea');
 };
 //--- End textarea widget
+
