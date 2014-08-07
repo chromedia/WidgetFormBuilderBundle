@@ -24,6 +24,10 @@ class CoreConstraints
             'email' => array(
                 'name' => 'Email',
                 'class' => 'Symfony\Component\Validator\Constraints\Email'
+            ),
+            'regex' => array(
+                'name' => 'Regex',
+                'class' => 'Symfony\Component\Validator\Constraints\Regex'
             )
         );
     }
