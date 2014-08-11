@@ -16,10 +16,14 @@ class WidgetAttributeTransformer implements DataTransformerInterface
      */
     public function transform($widgetAttribute)
     {
-        return array(
-            self::KEY_INDEX   => $widgetAttribute[self::KEY_INDEX],
-            self::VALUE_INDEX => $widgetAttribute[self::VALUE_INDEX]
-        );
+        if (!empty($widgetAttribute)) {
+            return array(
+                self::KEY_INDEX   => array_keys($widgetAttribute)[0],
+                self::VALUE_INDEX => array_values($widgetAttribute)[0]
+            );
+        } 
+
+        return array(self::KEY_INDEX => '', self::VALUE_INDEX => '');
     }
 
     /**
@@ -29,6 +33,10 @@ class WidgetAttributeTransformer implements DataTransformerInterface
      */
     public function reverseTransform($widgetAttribute)
     {
-        return array($widgetAttribute[self::KEY_INDEX] => $widgetAttribute[self::VALUE_INDEX]);
+        if (!empty($widgetAttribute)) {
+            return array($widgetAttribute[self::KEY_INDEX] => $widgetAttribute[self::VALUE_INDEX]);
+        } 
+
+        return array();       
     }
 }
