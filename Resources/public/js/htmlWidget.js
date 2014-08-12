@@ -159,3 +159,17 @@ CWFB_TextareaWidget.prototype._buildElement = function() {
 };
 //--- End textarea widget
 
+
+//--- Date widget - Given that date widget is single_text
+var CWFB_DateWidget = function(a, b) {
+    CWFB_HtmlWidget.call(this, a);
+};
+
+CWFB_DateWidget.prototype = Object.create(CWFB_HtmlWidget.prototype);
+
+CWFB_DateWidget.prototype._buildElement = function() {
+    this.el = document.createElement('input');
+    this.el.type = 'date';
+};
+//--- End of date widget
+

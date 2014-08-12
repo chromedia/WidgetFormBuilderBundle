@@ -34,6 +34,11 @@ class ChromediaWidgetFormBuilderExtension extends Extension
 
         $coreWidgets = $config['core_widgets'];
 
+        // $obj = new \ReflectionClass('Symfony\Component\Form\Extension\Core\Type\FormType');
+        // $options = $obj->getProperties();
+
+        // var_dump($options);exit;
+
         // TODO: MERGE with custom widgets
 
         // create _cwfb.widget_selection_choices parameter
@@ -43,19 +48,28 @@ class ChromediaWidgetFormBuilderExtension extends Extension
         }
         $container->setParameter($this->getInternalAlias().'.widget_selection_choices', $widgetSelectionChoices);
 
+
         // process constraints and create _cwfb.widget_constraint_choices
-        $coreConstraints = $config['core_constraints'];
         $widgetConstraintChoices = array();
         $widgetFlatConstraintOptions = array();
-        foreach ($coreConstraints as $id => &$constraintData) {
-            $widgetConstraintChoices[$id] = $constraintData['name'];
-            $obj = new \ReflectionClass($constraintData['class']);
-            $options = $obj->getDefaultProperties();
-            unset($options['groups']);
-            $constraintData['options'] = array_keys($options);
-            $widgetFlatConstraintOptions[$id] =$constraintData['options'];
+        $coreConstraints = array();
+
+        if (isset($config['core_constraints'])) {
+            $coreConstraints = $config['core_constraints'];
+        
+            foreach ($coreConstraints as $id => &$constraintData) {
+                $widgetConstraintChoices[$id] = $constraintData['name'];
+                $obj = new \ReflectionClass($constraintData['class']);
+                $options = $obj->getDefaultProperties();
+                unset($options['groups']);
+                $constraintData['options'] = array_keys($options);
+                $widgetFlatConstraintOptions[$id] = $constraintData['options'];
+            }
         }
 
+        // _cwfb.constraints_availability status
+        $container->setParameter($this->getInternalAlias().'.constraints_availability', !empty($coreConstraints));
+        
         // _cwfb.widget_constraint_choices will be used in the dropdown for selecting a constraint
         $container->setParameter($this->getInternalAlias().'.widget_constraint_choices', $widgetConstraintChoices);
 

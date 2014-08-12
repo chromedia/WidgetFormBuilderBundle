@@ -13,7 +13,8 @@ var WidgetFormBuilder = function(options){
             widget_id: this.form.find($('#chromedia_widget_builder_form_type_widget_id')),
             widget_choices: this.form.find($('#chromedia_widget_builder_form_type_widget_choices')),
             widget_attribute: this.form.find($('#chromedia_widget_builder_form_type_widget_attribute')),
-            widget_constraints: this.form.find($('#chromedia_widget_builder_form_type_widget_constraints'))
+            widget_constraints: this.form.find($('#chromedia_widget_builder_form_type_widget_constraints')),
+            widget_date_widgets: this.form.find($('#chromedia_widget_builder_form_type_widget_date_widgets')),
         };
     }
     else {
@@ -31,12 +32,15 @@ WidgetFormBuilder.prototype.initForm = function(){
 
         if (WidgetUtil.isChoiceWidget($(this).val())) {
             self.formElements.widget_choices.displayChoices();
+        } else {
+            self.formElements.widget_choices.removeChoices();
         }
     });
 
     this.populateWidgetChoices();
     this.populateWidgetAttributes();
     this.populateWidgetConstraints();
+
 };
 
 // widget choices
@@ -113,23 +117,27 @@ WidgetFormBuilder.prototype.populateWidgetConstraints = function(){
     var constraintOptions = {};
 
     var initWidgetConstraints = function(form, formElements) {
-        if (widgetConstraints.find('.form-group').length == 0) {
-            widgetConstraints.addCollectionRow();
-
-            var constraintType = widgetConstraints.find('select').val();
-            var optionsHolder = widgetConstraints.find('div[data-prototype]');
-            var options = widgetConstraints.find('select').attr('data-constraint-options');
-
-            constraintOptions = $.parseJSON(options);
-
-            populateConstraintOptions(optionsHolder, constraintOptions[constraintType]);
+        if (!widgetConstraints.is(':visible')) {
+            widgetConstraints.closest('.form-group').remove();
         } else {
-            var options = widgetConstraints.find('select').attr('data-constraint-options');
+            if (widgetConstraints.find('.form-group').length == 0) {
+                widgetConstraints.addCollectionRow();
 
-            constraintOptions = $.parseJSON(options); 
-        } 
+                var constraintType = widgetConstraints.find('select').val();
+                var optionsHolder = widgetConstraints.find('div[data-prototype]');
+                var options = widgetConstraints.find('select').attr('data-constraint-options');
 
-        addEvents();
+                constraintOptions = $.parseJSON(options);
+
+                populateConstraintOptions(optionsHolder, constraintOptions[constraintType]);
+            } else {
+                var options = widgetConstraints.find('select').attr('data-constraint-options');
+
+                constraintOptions = $.parseJSON(options); 
+            } 
+
+            addEvents();
+        }
     };
 
     var populateConstraintOptions = function(constraintOptionsHolder, availableOptions) {
@@ -190,7 +198,7 @@ $.fn.addCollectionRow = function(options) {
     }, options);
 
     var prototype = $(this).data('prototype');
-    var index = this.children('.form-group').length;
+    var index = $(this).children('.form-group').length;
     var newForm = $(WidgetUtil.replacePrototypeName(prototype, props.prototypeName, index));
   
     this.data('index', index + 1);
@@ -223,6 +231,11 @@ $.fn.displayChoices = function() {
     }
 
     $(this).closest('.form-group').show();
+}
+
+$.fn.removeChoices = function() {
+    $(this).empty();
+    $(this).closest('.form-group').hide();
 }
 
 

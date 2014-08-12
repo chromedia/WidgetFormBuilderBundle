@@ -28,6 +28,10 @@ var CWFB_HtmlWidgetFactory = (function($){
                     var widget = new CWFB_TextWidget(metadata);
                     widget.build();
                     break;
+                case 'date':
+                    var widget = new CWFB_DateWidget(metadata);
+                    widget.build();
+                    break;
                 default:
                     throw "CWFB_HtmlWidgetFactory: Unknown widget_id ["+metadata.widget_id+"]"
                     break;

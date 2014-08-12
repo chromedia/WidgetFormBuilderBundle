@@ -3,6 +3,8 @@ services:
     ## the main embedded form that will be used by other forms
     form.cwfb.chromedia_widget_builder_form_type:
         class: Chromedia\WidgetFormBuilderBundle\Form\WidgetBuilderFormType
+        calls:
+            - [setConstraintsAvailabilty, [%_cwfb.constraints_availability%]]
         tags:
             - { name: form.type, alias: chromedia_widget_builder_form_type }
 
@@ -23,7 +25,7 @@ services:
         tags:
             - { name: form.type, alias: chromedia_widget_attribute }
 
-    ## for chromedia_widget_builder_form_type.widget_constraints
+    ## for chromedia_widget_builder_form_type.widget_constraint field type
     form.cwfb.chromedia_widget_constraint:
         class: Chromedia\WidgetFormBuilderBundle\Form\WidgetConstraintFieldType
         tags:

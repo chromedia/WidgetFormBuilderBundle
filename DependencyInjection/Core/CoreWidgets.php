@@ -7,7 +7,9 @@ final class CoreWidgets
         'text' => array(
             'with_choices' => false
         ),
-
+        'date' => array(
+            'with_choices' => false
+        ),
         'textarea' => array(
             'with_choices' => false
         ),
@@ -19,7 +21,7 @@ final class CoreWidgets
         ),
         'radio' => array(
             'with_choices' => true
-        ),
+        )
     );
 
     static public function all()

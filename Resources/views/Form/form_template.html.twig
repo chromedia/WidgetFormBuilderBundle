@@ -32,9 +32,10 @@
         {{ form_row(form.constraint_id) }}
         {{ form_row(form.constraint_options) }}
 
-        <a href="#" class="add-widget-constraint-trigger">Add</a> |
         <a href="#" class="remove-widget-constraint-trigger">Remove</a>
     </div>
+
+    <a href="#" class="add-widget-constraint-trigger">Add</a>
 {% endspaceless %}
 {% endblock %}
 
@@ -56,8 +57,9 @@
 
 {% block chromedia_constraint_choice_widget %}
 {% spaceless %}
- 
-    {% set attr = attr | merge({"data-constraint-options": cwfb_widget_constraint_flattened_options | json_encode })%}
+    {% if cwfb_widget_constraint_flattened_options is not empty %}
+        {% set attr = attr | merge({"data-constraint-options": cwfb_widget_constraint_flattened_options | json_encode })%}
+    {% endif %}
   
     {{ block('choice_widget') }}
 {% endspaceless %}

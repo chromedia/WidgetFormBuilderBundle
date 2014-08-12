@@ -8,9 +8,16 @@ class WidgetBuilderFormType extends AbstractType
 {
     const NAME = 'chromedia_widget_builder_form_type';
 
+    private $hasConstraints = true;
+
     public function getName()
     {
         return self::NAME;
+    }
+
+    public function setConstraintsAvailabilty($hasConstraints = true)
+    {
+        $this->hasConstraints = $hasConstraints;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -18,8 +25,6 @@ class WidgetBuilderFormType extends AbstractType
         // will either be a core_widge or a custom_widget listed in core_widgets or custom_widgets configuration
         $builder->add('widget_id', 'chromedia_available_widget_choice');
 
-        // this will contain the possible values for widgets that has choices like choice, checkbox, radio
-        // TODO: implement this
         $builder->add('widget_choices', 'collection', array(
             'type'      => 'chromedia_widget_choice',
             'allow_add' => true
@@ -28,12 +33,18 @@ class WidgetBuilderFormType extends AbstractType
         $builder->add('widget_attribute', 'collection', array(
         	'type' => 'chromedia_widget_attribute',
             'allow_add' => true
-        ));
+        )); 
 
-        $builder->add('widget_constraints', 'collection', array(
+        $widgetConstraintOpt = array(
             'type' => 'chromedia_widget_constraint',
             'allow_add' => true
-        ));
+        );
+
+        if (!$this->hasConstraints) {
+            $widgetConstraintOpt['attr'] = array('style' => 'display:none;');
+        }
+
+        $builder->add('widget_constraints', 'collection', $widgetConstraintOpt);
 
         $builder->addModelTransformer(new JsonMetadataTransformer());
     }
