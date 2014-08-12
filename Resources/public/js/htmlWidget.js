@@ -28,8 +28,11 @@ CWFB_HtmlWidget.prototype._buildChoices = function() {
 
 CWFB_HtmlWidget.prototype._buildAttributes = function() {
     var elDom = this.el;
+
     this.widgetAttributes.forEach(function(item, key){
-        elDom.setAttribute(item.key, item.value);
+        for (attributeName in item) {}
+    
+        elDom.setAttribute(attributeName, item[attributeName]);
     });
     
     return this;
@@ -104,7 +107,8 @@ CWFB_ExpandedChoiceWidget.prototype._buildAttributes = function() {
         var inputs = elDom.getElementsByTagName('input');
 
         for(var ctr = 0; ctr < inputs.length; ctr++) {
-            inputs[ctr].setAttribute(item.key, item.value);
+            for (attributeName in item) {}
+            inputs[ctr].setAttribute(attributeName, item[attributeName]);
         }
     });
     
@@ -170,6 +174,7 @@ CWFB_DateWidget.prototype = Object.create(CWFB_HtmlWidget.prototype);
 CWFB_DateWidget.prototype._buildElement = function() {
     this.el = document.createElement('input');
     this.el.type = 'date';
+    this.el.attributes['data-provide'] = 'datepicker';
 };
 //--- End of date widget
 
