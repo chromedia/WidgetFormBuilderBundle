@@ -117,7 +117,7 @@ WidgetFormBuilder.prototype.populateWidgetConstraints = function(){
     var constraintOptions = {};
 
     var initWidgetConstraints = function(form, formElements) {
-        if (!widgetConstraints.is(':visible')) {
+        if (widgetConstraints && !widgetConstraints.is(':visible')) {
             widgetConstraints.closest('.form-group').remove();
         } else {
             if (widgetConstraints.find('.form-group').length == 0) {
