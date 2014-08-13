@@ -3,6 +3,7 @@ namespace Chromedia\WidgetFormBuilderBundle\Service;
 
 use Symfony\Component\Form\FormFactory as CoreFormFactory;
 use Chromedia\WidgetFormBuilderBundle\DependencyInjection\Core\CoreWidgets;
+use Chromedia\WidgetFormBuilderBundle\Exception\FieldTypeFactoryException;
 
 /**
  *
@@ -19,6 +20,8 @@ class FieldTypeFactory
 
     private $availableConstraints;
 
+    private $availableWidgets;
+
     public function setCoreFormFactory(CoreFormFactory $v)
     {
         $this->coreFormFactory = $v;
@@ -27,6 +30,11 @@ class FieldTypeFactory
     public function setAvailableConstraints($v)
     {
         $this->availableConstraints = $v;
+    }
+
+    public function setAvailableWidgets($v)
+    {
+        $this->availableWidgets = $v;
     }
 
     /**
@@ -65,10 +73,13 @@ class FieldTypeFactory
      */
     private function buildWidgetChoices($widgetMetadata, &$formOptions)
     {
-        // FIXME: This only checks for core widgets, also add the custom widgets
-        $coreWidget = CoreWidgets::get($widgetMetadata['widget_id']);
-        if ($coreWidget) {
-            if ($coreWidget['with_choices']) {
+        if (!array_key_exists($widgetMetadata['widget_id'], $this->availableWidgets)) {
+            throw FieldTypeFactoryException::widgetIdUnavailable($widgetMetadata['widget_id']);
+        }
+
+        $widget = $this->availableWidgets[$widgetMetadata['widget_id']];
+        if ($widget) {
+            if ($widget['with_choices']) {
                 $formOptions['choices'] = $widgetMetadata['widget_choices'];
             }
         }

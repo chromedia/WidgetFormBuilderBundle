@@ -11,3 +11,4 @@ services:
         calls:
             - [setCoreFormFactory, [@form.factory]]
             - [setAvailableConstraints, [%_cwfb.widget_constraints%]]
+            - [setAvailableWidgets, [%_cwfb.available_widgets%]]
