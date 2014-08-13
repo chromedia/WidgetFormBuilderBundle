@@ -10,6 +10,9 @@ final class CoreWidgets
         'date' => array(
             'with_choices' => false
         ),
+        'file' => array(
+            'with_choices' => false
+        ),
         'textarea' => array(
             'with_choices' => false
         ),

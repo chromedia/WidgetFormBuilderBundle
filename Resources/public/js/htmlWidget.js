@@ -117,7 +117,6 @@ CWFB_ExpandedChoiceWidget.prototype._buildAttributes = function() {
 //--- End of expanded choices
 
 
-
 //--- Checkbox widget
 var CWFB_CheckboxWidget = function(a, b) {
     CWFB_ExpandedChoiceWidget.call(this, a, b, 'checkbox');
@@ -175,6 +174,20 @@ CWFB_DateWidget.prototype._buildElement = function() {
     this.el = document.createElement('input');
     this.el.type = 'date';
     this.el.attributes['data-provide'] = 'datepicker';
+};
+//--- End of date widget
+
+
+//--- File widget
+var CWFB_FileWidget = function(a, b) {
+    CWFB_HtmlWidget.call(this, a);
+};
+
+CWFB_FileWidget.prototype = Object.create(CWFB_HtmlWidget.prototype);
+
+CWFB_FileWidget.prototype._buildElement = function() {
+    this.el = document.createElement('input');
+    this.el.type = 'file';
 };
 //--- End of date widget
 
