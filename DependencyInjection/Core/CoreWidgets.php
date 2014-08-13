@@ -29,6 +29,13 @@ final class CoreWidgets
         return self::$all;
     }
 
+    static public function get($widgetId)
+    {
+        return isset(self::$all[$widgetId])
+            ? self::$all[$widgetId]
+            : null;
+    }
+
     static public function _init()
     {
         foreach (self::$all as $widgetId => &$widgetProperties) {

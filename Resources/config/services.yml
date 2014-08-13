@@ -5,3 +5,8 @@ services:
             - [setConstraintFlattenedOptions, [%_cwfb.widget_flat_constraint_options%]]
         tags:
             - { name: twig.extension }
+
+    cwfb.field_type_factory:
+        class: Chromedia\WidgetFormBuilderBundle\Service\FieldTypeFactory
+        calls:
+            - [setCoreFormFactory, [@form.factory]]
