@@ -17,9 +17,16 @@ class FieldTypeFactory
      */
     private $coreFormFactory;
 
+    private $availableConstraints;
+
     public function setCoreFormFactory(CoreFormFactory $v)
     {
         $this->coreFormFactory = $v;
+    }
+
+    public function setAvailableConstraints($v)
+    {
+        $this->availableConstraints = $v;
     }
 
     /**
@@ -41,7 +48,9 @@ class FieldTypeFactory
         // build form choices
         $this
             ->buildWidgetChoices($widgetMetadata, $formOptions)
-            ->buildWidgetAttributes($widgetMetadata, $formOptions);
+            ->buildWidgetAttributes($widgetMetadata, $formOptions)
+            ->buildConstraints($widgetMetadata, $formOptions)
+        ;
 
         $fieldType = $this->coreFormFactory->createNamedBuilder($name, $widgetMetadata['widget_id'], $formData, $formOptions);
 
@@ -80,6 +89,32 @@ class FieldTypeFactory
             $attr = array_merge($attr, $data);
         }
         $formOptions['attr'] = $attr;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param array $widgetMetadata
+     * @param array $formOptions
+     * @return \Chromedia\WidgetFormBuilderBundle\Service\FieldTypeFactory
+     */
+    private function buildConstraints($widgetMetadata, &$formOptions)
+    {
+        $constraints = array();
+        foreach ($widgetMetadata['widget_constraints'] as $constraintData) {
+            if (isset($this->availableConstraints[$constraintData['constraint_id']])) {
+                $class = $this->availableConstraints[$constraintData['constraint_id']]['class'];
+                $constraintObj = new $class($constraintData['constraint_options']);
+
+                $constraints[] = $constraintObj;
+            }
+            else {
+                throw new \Exception('Unknown Constraint: '.$constraintData['constraint_id']);
+            }
+        }
+
+        $formOptions['constraints'] = $constraints;
 
         return $this;
     }

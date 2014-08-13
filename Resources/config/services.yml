@@ -10,3 +10,4 @@ services:
         class: Chromedia\WidgetFormBuilderBundle\Service\FieldTypeFactory
         calls:
             - [setCoreFormFactory, [@form.factory]]
+            - [setAvailableConstraints, [%_cwfb.widget_constraints%]]
