@@ -1,3 +1,8 @@
 _cwfb_examples_index:
     path: /examples
     defaults: { _controller: ChromediaWidgetFormBuilderBundle:Examples:index }
+
+
+_cwfb_available_widgets_js:
+    path: /availableWidgets.js
+    defaults: { _controller: ChromediaWidgetFormBuilderBundle:ElementFactory:availableWidgetsJavascript }

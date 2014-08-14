@@ -1,0 +1,27 @@
+var CWFB_AvailableWidgets = {
+
+    all: [],
+
+    getByWidgetId: function(widgetId){
+        var widget = null;
+        CWFB_AvailableWidgets.all.forEach(function(item, key){
+            if (widgetId == item.id) {
+                widget = item;
+                return false;;
+            }
+        });
+
+        return widget;
+    }
+};
+
+{% for child in formPrototype.children %}
+CWFB_AvailableWidgets.all.push({
+    id: ' {{ child.vars.name | raw}}'.trim(),
+    html: '{% spaceless %}{{ form_widget(child)| raw}}{%endspaceless%}'.trim()
+});
+{% endfor %}
+
+
+
+
