@@ -17,9 +17,12 @@ class WidgetAttributeTransformer implements DataTransformerInterface
     public function transform($widgetAttribute)
     {
         if (!empty($widgetAttribute)) {
+            $arrayKeys = array_keys($widgetAttribute);
+            $arrayAttributes = array_values($widgetAttribute);
+
             return array(
-                self::KEY_INDEX   => array_keys($widgetAttribute)[0],
-                self::VALUE_INDEX => array_values($widgetAttribute)[0]
+                self::KEY_INDEX   => $arrayKeys[0],
+                self::VALUE_INDEX => $arrayAttributes[0]
             );
         } 
 
