@@ -48,6 +48,7 @@ class FieldTypeFactory
     public function createFieldTypeFromWidgetMetadata($name, array $widgetMetadata=array(), $formData=null, array $formOptions=array())
     {
         $required = array('widget_id');
+
         foreach ($required as $property) {
         	if (!isset($widgetMetadata[$property])) {
         		throw new \Exception(__CLASS__.':createFieldTypeFromWidgetMetadata missing required metadata key ['.$property.']');
@@ -55,6 +56,7 @@ class FieldTypeFactory
         }
         // build form choices
         $this
+            ->buildWidget($widgetMetadata, $formOptions)
             ->buildWidgetChoices($widgetMetadata, $formOptions)
             ->buildWidgetAttributes($widgetMetadata, $formOptions)
             ->buildConstraints($widgetMetadata, $formOptions)
@@ -63,6 +65,37 @@ class FieldTypeFactory
         $fieldType = $this->coreFormFactory->createNamedBuilder($name, $widgetMetadata['widget_id'], $formData, $formOptions);
 
         return $fieldType;
+    }
+
+    /**
+     *  
+     */
+    private function buildWidget(&$widgetMetadata, &$formOptions)
+    {
+        if (!array_key_exists($widgetMetadata['widget_id'], $this->availableWidgets)) {
+            throw FieldTypeFactoryException::widgetIdUnavailable($widgetMetadata['widget_id']);
+        }
+
+        $widget = $this->availableWidgets[$widgetMetadata['widget_id']];
+
+        if ($widget) {
+            if ($widget['with_choices']) {
+                switch($widgetMetadata['widget_id']) {
+                    case 'radio':
+                        $formOptions['expanded'] = true;
+                        $formOptions['multiple'] = false; 
+                        break;
+                    case 'checkbox':  
+                        $formOptions['expanded'] = true;
+                        $formOptions['multiple'] = true; 
+                        break;
+                }
+
+                $widgetMetadata['widget_id'] = 'choice';
+            }
+        }
+
+        return $this;
     }
 
     /**
