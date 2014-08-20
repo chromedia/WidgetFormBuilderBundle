@@ -1,9 +1,16 @@
 <?php
 namespace Chromedia\WidgetFormBuilderBundle\Form;
 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 use Chromedia\WidgetFormBuilderBundle\Form\Transformer\JsonMetadataTransformer;
+
+
+
 class WidgetBuilderFormType extends AbstractType
 {
     const NAME = 'chromedia_widget_builder_form_type';
@@ -24,6 +31,12 @@ class WidgetBuilderFormType extends AbstractType
     {
         // will either be a core_widge or a custom_widget listed in core_widgets or custom_widgets configuration
         $builder->add('widget_id', 'chromedia_available_widget_choice');
+
+        $builder->add('widget_config_options', 'collection', array(
+            'type' => 'chromedia_widget_config_option',
+            'allow_add' => true,
+            'required' => false
+        )); 
 
         $builder->add('widget_choices', 'collection', array(
             'type'      => 'chromedia_widget_choice',

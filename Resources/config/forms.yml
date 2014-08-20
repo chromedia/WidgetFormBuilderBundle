@@ -8,10 +8,18 @@ services:
         tags:
             - { name: form.type, alias: chromedia_widget_builder_form_type }
 
+    form.cwfb.chromedia_widget_config_option:
+        class: Chromedia\WidgetFormBuilderBundle\Form\WidgetConfigOptionFieldType
+        tags:
+            - { name: form.type, alias: chromedia_widget_config_option }
+        calls:
+            - [setWidgetConfigOptions, [%_cwfb.widget_config_options%]]
+
     form.cwfb.available_widget_choice:
         class: Chromedia\WidgetFormBuilderBundle\Form\AvailableWidgetChoiceFieldType
         calls:
             - [setChoices, [%_cwfb.widget_selection_choices%]]
+            - [setWidgetConfigOptions, [%_cwfb.widget_config_options%]]
         tags:
             - { name: form.type, alias: chromedia_available_widget_choice }
 

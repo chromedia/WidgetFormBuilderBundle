@@ -12,9 +12,9 @@ class ExamplesController extends Controller
 
         if ($request->isMethod('POST')) {
         	$form->submit($request);
-        	var_dump($form->getData());
-        	var_dump(json_decode($form->getData())->widget_constraints);
-        	exit;;
+        	var_dump(json_encode($form->getData()));
+        	// var_dump(json_decode($form->getData())->widget_constraints);
+        	// exit;;
 
         }
 

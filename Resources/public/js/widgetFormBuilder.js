@@ -14,7 +14,7 @@ var WidgetFormBuilder = function(options){
             widget_choices: this.form.find($('#chromedia_widget_builder_form_type_widget_choices')),
             widget_attribute: this.form.find($('#chromedia_widget_builder_form_type_widget_attribute')),
             widget_constraints: this.form.find($('#chromedia_widget_builder_form_type_widget_constraints')),
-            widget_date_widgets: this.form.find($('#chromedia_widget_builder_form_type_widget_date_widgets')),
+            widget_config_options: this.form.find($('#chromedia_widget_builder_form_type_widget_config_options')),
         };
     }
     else {
@@ -35,13 +35,117 @@ WidgetFormBuilder.prototype.initForm = function(){
         } else {
             self.formElements.widget_choices.removeChoices();
         }
+
+        self.populateWidgetConfigOptions();
     });
 
     this.populateWidgetChoices();
+    this.initWidgetConfigOptions();
     this.populateWidgetAttributes();
     this.populateWidgetConstraints();
 
 };
+// init widget options
+WidgetFormBuilder.prototype.initWidgetConfigOptions = function(){
+    var self = this;
+    var widgetConfigOption = this.formElements.widget_config_options;
+    var widget = this.formElements.widget_id;
+
+    var options = $.parseJSON(widget.attr('widget-options'));
+
+    this.populateWidgetConfigOptions();
+
+    // add event
+    self.form.on('click', '.add-widget-config-option-trigger', function(e) {
+        e.preventDefault();
+
+        widgetConfigOption.addCollectionRow();
+
+        // FIXME: This section is reusable
+
+        var widgetOptions = options[widget.val()];
+        var select = widgetConfigOption.find('select:last');
+
+        select.find('option').each(function() {
+            var val = $(this).val();
+            var included = false;
+
+            $.each(widgetOptions, function(index, item) {
+                if (val == index) {
+                    included = true;
+
+                    return false;
+                }
+            });
+
+            if (included) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+
+    self.form.on('click', '.remove-widget-config-option-trigger', function(e) {
+        e.preventDefault();
+
+        $(this).removeCollectionRow({ isRequired : false });
+    });
+
+    return this;
+}
+
+// widget options
+WidgetFormBuilder.prototype.populateWidgetConfigOptions = function(){
+    var self = this;
+    var widgetConfigOption = this.formElements.widget_config_options;
+
+    if (widgetConfigOption) {
+        var widget = this.formElements.widget_id;
+
+        var options = $.parseJSON(widget.attr('widget-options'));
+        var widgetOptions = options[widget.val()];
+
+        if (typeof widgetOptions == 'object' && !$.isArray(widgetOptions)) {
+            widgetConfigOption.parent().show();
+
+            if (widgetConfigOption.find('.form-group').length == 0) {
+                widgetConfigOption.addCollectionRow();
+            }
+        
+            var select = widgetConfigOption.find('select');
+            // select.remove('option');
+
+            select.find('option').each(function() {
+                var val = $(this).val();
+                var included = false;
+
+                $.each(widgetOptions, function(index, item) {
+                    if (val == index) {
+                        included = true;
+
+                        return false;
+                    }
+                    // select.append('<option value="'+index+'">'+index+'</option>');
+                });
+
+                if (included) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+                //optionsInSelect.push($(this).val());
+            });
+
+            
+        } else {
+            widgetConfigOption.parent().hide();
+        }
+    } 
+
+    return this;
+}
+
 
 // widget choices
 WidgetFormBuilder.prototype.populateWidgetChoices = function(){
@@ -76,6 +180,8 @@ WidgetFormBuilder.prototype.populateWidgetChoices = function(){
     }
 
     initWidgetChoices();
+
+    return this;
 }
 
 // Widget atribute
@@ -108,6 +214,8 @@ WidgetFormBuilder.prototype.populateWidgetAttributes = function(){
     }
 
     initWidgetAttributes();
+
+    return this;
 }
 
 // Widget constraints
@@ -188,6 +296,8 @@ WidgetFormBuilder.prototype.populateWidgetConstraints = function(){
     };
 
     initWidgetConstraints();
+
+    return this;
 }
 
 
@@ -253,7 +363,7 @@ var WidgetUtil = (function($) {
 
         isChoiceWidget : function(widget) {
             return $.inArray(widget, this.choiceWidgets) != -1;
-        },
+        }
     }
 })(jQuery);
                                                                                                                                                                                                                        

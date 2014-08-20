@@ -37,6 +37,12 @@ class FieldTypeFactory
         $this->availableWidgets = $v;
     }
 
+    public function setWidgetTransformers($v)
+    {
+        $this->widgetTransformers = $v;
+    }
+
+
     /**
      *
      * @param unknown $name
@@ -63,7 +69,8 @@ class FieldTypeFactory
         ;
 
         $fieldType = $this->coreFormFactory->createNamedBuilder($name, $widgetMetadata['widget_id'], $formData, $formOptions);
-
+        // $fieldType->addTransformer();
+        
         return $fieldType;
     }
 

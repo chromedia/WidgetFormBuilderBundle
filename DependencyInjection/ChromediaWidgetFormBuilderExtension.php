@@ -37,9 +37,12 @@ class ChromediaWidgetFormBuilderExtension extends Extension
         // create _cwfb.widget_selection_choices parameter
         $widgetSelectionChoices = array();
         $availableWidgets = array();
+        $widgetConfigOptions = array();
+
         foreach ($coreWidgets as $widgetId => $widgetData) {
             $widgetSelectionChoices[$widgetId] = $widgetData['name'];
             $availableWidgets[$widgetId] = $widgetData;
+            $widgetConfigOptions[$widgetId] = $widgetData['options'];
         }
 
         // add custom widgets to selection
@@ -50,8 +53,8 @@ class ChromediaWidgetFormBuilderExtension extends Extension
         }
 
         $container->setParameter($this->getInternalAlias().'.widget_selection_choices', $widgetSelectionChoices);
+        $container->setParameter($this->getInternalAlias().'.widget_config_options', $widgetConfigOptions);
         $container->setParameter($this->getInternalAlias().'.available_widgets', $availableWidgets);
-
 
         // process constraints and create _cwfb.widget_constraint_choices
         $widgetConstraintChoices = array();
@@ -82,7 +85,6 @@ class ChromediaWidgetFormBuilderExtension extends Extension
 
         // _cwfb.widget_flat_constraint_options
         $container->setParameter($this->getInternalAlias().'.widget_flat_constraint_options', $widgetFlatConstraintOptions);
-
 
         // _cwfb.form_template
         $container->setParameter($this->getInternalAlias().'.form_template', $config['form_template']);

@@ -64,3 +64,21 @@
 {% endspaceless %}
 {% endblock %}
 
+{% block chromedia_widget_config_option_widget %}
+{% spaceless %}
+    {{ form_widget(form.config_option) }}
+    {{ form_widget(form.config_option_value) }}
+
+    <a href="#" class="add-widget-config-option-trigger">Add</a> |
+    <a href="#" class="remove-widget-config-option-trigger">Remove</a>
+{% endspaceless %}
+{% endblock %}
+
+{% block chromedia_widget_config_option_row %}
+{% spaceless %}
+    <div class="form-group">
+        {{ block('chromedia_widget_config_option_widget') }}
+    </div>
+{% endspaceless %}
+{% endblock %}
+

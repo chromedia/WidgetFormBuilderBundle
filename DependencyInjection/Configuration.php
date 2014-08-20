@@ -98,6 +98,11 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('name')
                 ->defaultValue($widgetProperty['name'])
             ->end()
+            ->arrayNode('options')
+                ->prototype('scalar')->end()
+            ->end()
+            ->scalarNode('transformer')
+            ->end()
             // this should be an internal option and should not be overwritten
             ->booleanNode('with_choices')
                 ->defaultValue($widgetProperty['with_choices'])
