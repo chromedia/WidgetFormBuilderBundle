@@ -22,6 +22,9 @@ class FieldTypeFactory
 
     private $availableWidgets;
 
+    private $widgetTransformers;
+
+
     public function setCoreFormFactory(CoreFormFactory $v)
     {
         $this->coreFormFactory = $v;
@@ -41,6 +44,11 @@ class FieldTypeFactory
     {
         $this->widgetTransformers = $v;
     }
+
+    public function setServiceContainer($v)
+    {
+        $this->container = $v;
+    }    
 
 
     /**
@@ -69,7 +77,11 @@ class FieldTypeFactory
         ;
 
         $fieldType = $this->coreFormFactory->createNamedBuilder($name, $widgetMetadata['widget_id'], $formData, $formOptions);
-        // $fieldType->addTransformer();
+
+        if (isset($this->widgetTransformers[$widgetMetadata['widget_id']]) && !empty($this->widgetTransformers[$widgetMetadata['widget_id']])) {
+            // $fieldType->addModelTransformer($this->widgetTransformers[$widgetMetadata['widget_id']]);
+            $fieldType->addModelTransformer($this->container->get($this->widgetTransformers[$widgetMetadata['widget_id']]));
+        } 
         
         return $fieldType;
     }

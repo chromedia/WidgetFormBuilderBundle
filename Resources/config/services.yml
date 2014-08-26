@@ -12,4 +12,5 @@ services:
             - [setCoreFormFactory, [@form.factory]]
             - [setAvailableConstraints, [%_cwfb.widget_constraints%]]
             - [setAvailableWidgets, [%_cwfb.available_widgets%]]
-            # - [setWidgetTransformers, [%_cwfb.widget_transformers%]]
+            - [setWidgetTransformers, [%_cwfb.widget_transformers%]]
+            - [setServiceContainer, [@service_container]]

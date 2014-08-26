@@ -38,11 +38,16 @@ class ChromediaWidgetFormBuilderExtension extends Extension
         $widgetSelectionChoices = array();
         $availableWidgets = array();
         $widgetConfigOptions = array();
+        $transformers = array();
 
         foreach ($coreWidgets as $widgetId => $widgetData) {
             $widgetSelectionChoices[$widgetId] = $widgetData['name'];
             $availableWidgets[$widgetId] = $widgetData;
             $widgetConfigOptions[$widgetId] = $widgetData['options'];
+
+            if (isset($widgetData['transformer'])) {
+                $transformers[$widgetId] = $widgetData['transformer'];
+            }
         }
 
         // add custom widgets to selection
@@ -50,11 +55,16 @@ class ChromediaWidgetFormBuilderExtension extends Extension
             $widgetSelectionChoices[$widgetId] = $widgetData['name'];
             $widgetData['internal'] = false; // always set to false
             $availableWidgets[$widgetId] = $widgetData;
+            
+            if (isset($widgetData['transformer'])) {
+                $transformers[$widgetId] = $widgetData['transformer'];
+            }
         }
 
         $container->setParameter($this->getInternalAlias().'.widget_selection_choices', $widgetSelectionChoices);
         $container->setParameter($this->getInternalAlias().'.widget_config_options', $widgetConfigOptions);
         $container->setParameter($this->getInternalAlias().'.available_widgets', $availableWidgets);
+        $container->setParameter($this->getInternalAlias().'.widget_transformers', $transformers);
 
         // process constraints and create _cwfb.widget_constraint_choices
         $widgetConstraintChoices = array();
