@@ -126,7 +126,6 @@ WidgetFormBuilder.prototype.populateWidgetConfigOptions = function(){
 
                         return false;
                     }
-                    // select.append('<option value="'+index+'">'+index+'</option>');
                 });
 
                 if (included) {

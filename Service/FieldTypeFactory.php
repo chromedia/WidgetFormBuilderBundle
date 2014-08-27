@@ -79,10 +79,8 @@ class FieldTypeFactory
 
         $fieldType = $this->coreFormFactory->createNamedBuilder($name, $widgetMetadata['widget_id'], $formData, $formOptions);
 
-        if (isset($this->widgetTransformers[$widgetMetadata['widget_id']]) && !empty($this->widgetTransformers[$widgetMetadata['widget_id']])) {
-            // $fieldType->addModelTransformer($this->widgetTransformers[$widgetMetadata['widget_id']]);
-            $fieldType->addModelTransformer($this->container->get($this->widgetTransformers[$widgetMetadata['widget_id']]));
-        } 
+        $this->addTransformers($widgetMetadata, $fieldType);
+        
         
         return $fieldType;
     }
@@ -199,6 +197,30 @@ class FieldTypeFactory
             }
         } catch(\Exception $e) {
             throw new \Exception('An invalid field configuration was set.');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Adds transformers
+     */
+    private function addTransformers($widgetMetadata, &$fieldType)
+    {
+        $transformers = isset($this->widgetTransformers[$widgetMetadata['widget_id']]) ? $this->widgetTransformers[$widgetMetadata['widget_id']] : array();
+
+        foreach ($transformers as $key => $transformer) {
+            if (!empty($transformer)) {
+                switch ($key) {
+                    case 'model':
+                        $fieldType->addModelTransformer($this->container->get($transformer));
+                        break;
+
+                    case 'view':
+                        $fieldType->addViewTransformer($this->container->get($transformer));
+                        break;
+                }
+            }
         }
 
         return $this;
