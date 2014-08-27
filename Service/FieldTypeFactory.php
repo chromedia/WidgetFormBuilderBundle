@@ -73,6 +73,7 @@ class FieldTypeFactory
             ->buildWidget($widgetMetadata, $formOptions)
             ->buildWidgetChoices($widgetMetadata, $formOptions)
             ->buildWidgetAttributes($widgetMetadata, $formOptions)
+            ->buildWidgetOptions($widgetMetadata, $formOptions)
             ->buildConstraints($widgetMetadata, $formOptions)
         ;
 
@@ -178,6 +179,23 @@ class FieldTypeFactory
         }
 
         $formOptions['constraints'] = $constraints;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param array $widgetMetadata
+     * @param array $formOptions
+     * @return \Chromedia\WidgetFormBuilderBundle\Service\FieldTypeFactory
+     */
+    private function buildWidgetOptions($widgetMetadata, &$formOptions)
+    {
+        $options = isset($widgetMetadata['widget_config_options']);
+
+        foreach ($options as $key => $option) {
+            $formOptions[$key] = $option;
+        }
 
         return $this;
     }

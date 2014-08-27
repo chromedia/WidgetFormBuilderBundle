@@ -44,8 +44,18 @@ CWFB_HtmlWidget.prototype._buildAttributes = function() {
 
     this.widgetAttributes.forEach(function(item, key){
         for (attributeName in item) {}
-    
-        elDom.setAttribute(attributeName, item[attributeName]);
+
+        if (attributeName) {
+            var inputTags = elDom.querySelectorAll('input, textarea, select');
+
+            if (inputTags && inputTags.length > 0) {
+                for(var ctr = 0; ctr < inputTags.length; ctr++) {
+                    inputTags[ctr].setAttribute(attributeName, item[attributeName]);
+                }
+            } else {
+                elDom.setAttribute(attributeName, item[attributeName]);
+            }
+        }
     });
     
     return this;
