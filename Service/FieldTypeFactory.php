@@ -191,10 +191,14 @@ class FieldTypeFactory
      */
     private function buildWidgetOptions($widgetMetadata, &$formOptions)
     {
-        $options = isset($widgetMetadata['widget_config_options']);
+        $setOptions = isset($widgetMetadata['widget_config_options']) ? $widgetMetadata['widget_config_options'] : array();
 
-        foreach ($options as $key => $option) {
-            $formOptions[$key] = $option;
+        try {
+            foreach($setOptions as $option) {
+                $formOptions = array_merge($formOptions, $option); 
+            }
+        } catch(\Exception $e) {
+            throw new \Exception('An invalid field configuration was set.');
         }
 
         return $this;
