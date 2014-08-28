@@ -48,42 +48,14 @@ WidgetFormBuilder.prototype.initForm = function(){
 // init widget options
 WidgetFormBuilder.prototype.initWidgetConfigOptions = function(){
     var self = this;
-    var widgetConfigOption = this.formElements.widget_config_options;
-    var widget = this.formElements.widget_id;
-
-    var options = $.parseJSON(widget.attr('widget-options'));
-
+    
     this.populateWidgetConfigOptions();
 
     // add event
     self.form.on('click', '.add-widget-config-option-trigger', function(e) {
         e.preventDefault();
 
-        widgetConfigOption.addCollectionRow();
-
-        // FIXME: This section is reusable
-
-        var widgetOptions = options[widget.val()];
-        var select = widgetConfigOption.find('select:last');
-
-        select.find('option').each(function() {
-            var val = $(this).val();
-            var included = false;
-
-            $.each(widgetOptions, function(index, item) {
-                if (val == index) {
-                    included = true;
-
-                    return false;
-                }
-            });
-
-            if (included) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
+        self.populateWidgetConfigOptions(false);
     });
 
     self.form.on('click', '.remove-widget-config-option-trigger', function(e) {
@@ -96,26 +68,28 @@ WidgetFormBuilder.prototype.initWidgetConfigOptions = function(){
 }
 
 // widget options
-WidgetFormBuilder.prototype.populateWidgetConfigOptions = function(){
+WidgetFormBuilder.prototype.populateWidgetConfigOptions = function(refresh){
     var self = this;
     var widgetConfigOption = this.formElements.widget_config_options;
 
+    if (typeof refresh === 'undefined' ) {
+        refresh = true;
+    }
+   
     if (widgetConfigOption) {
         var widget = this.formElements.widget_id;
-
         var options = $.parseJSON(widget.attr('widget-options'));
         var widgetOptions = options[widget.val()];
 
         if (typeof widgetOptions == 'object' && !$.isArray(widgetOptions)) {
             widgetConfigOption.parent().show();
 
-            if (widgetConfigOption.find('.form-group').length == 0) {
+            if ((refresh && widgetConfigOption.find('.form-group').length == 0) || !refresh) {
                 widgetConfigOption.addCollectionRow();
             }
         
             var select = widgetConfigOption.find('select');
-            // select.remove('option');
-
+          
             select.find('option').each(function() {
                 var val = $(this).val();
                 var included = false;
@@ -133,10 +107,8 @@ WidgetFormBuilder.prototype.populateWidgetConfigOptions = function(){
                 } else {
                     $(this).hide();
                 }
-                //optionsInSelect.push($(this).val());
             });
 
-            
         } else {
             widgetConfigOption.parent().hide();
         }

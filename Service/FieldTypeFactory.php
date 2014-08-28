@@ -191,6 +191,7 @@ class FieldTypeFactory
     {
         $setOptions = isset($widgetMetadata['widget_config_options']) ? $widgetMetadata['widget_config_options'] : array();
 
+        // TODO: validate set options
         try {
             foreach($setOptions as $option) {
                 $formOptions = array_merge($formOptions, $option); 
