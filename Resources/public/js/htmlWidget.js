@@ -36,8 +36,43 @@ CWFB_HtmlWidget.prototype._buildElement = function() {
 };
 
 CWFB_HtmlWidget.prototype._buildChoices = function() {
+    switch(this.widgetId) {
+        case 'radio':
+        case 'checkbox':
+            var widget = this.el;
+            var widgetWithChoices = '';
+
+            this.widgetChoices.forEach(function(item) {
+                var choice = widget.cloneNode(false);
+                choice.value = item;
+                
+                var label = document.createElement('label');
+                label.appendChild(document.createTextNode(item));
+
+                // widgetWithChoices += choice.toString() + label.toString(); 
+
+                // console.log(widgetWithChoices);
+            });
+
+            //this.el = CWFB_jQueryUtility.htmlStringToDOM(widgetWithChoices);
+
+            break;
+        case 'choice':
+            var elDom = this.el;
+    
+            this.widgetChoices.forEach(function(item) {
+                var opt = document.createElement('option');
+                opt.appendChild(document.createTextNode(item));
+                
+                elDom.appendChild(opt);
+            });
+
+            break;
+    }
+
     return this;
 };
+
 
 CWFB_HtmlWidget.prototype._buildAttributes = function() {
     var elDom = this.el;

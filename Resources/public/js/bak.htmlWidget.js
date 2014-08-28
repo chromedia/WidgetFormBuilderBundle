@@ -86,7 +86,6 @@ CWFB_ExpandedChoiceWidget.prototype._buildChoices = function() {
         var element = document.createElement('input');
 
         element.type = type;
-        // element.name = 'cwfb_'+type;
         element.value = item;
 
         var label = document.createElement('label');

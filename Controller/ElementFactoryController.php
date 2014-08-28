@@ -13,9 +13,26 @@ class ElementFactoryController extends Controller
         $formBuilder = $this->createFormBuilder(null, array('csrf_protection' => false));
 
         foreach ($widgetsData as $widgetId => $data) {
-            $formBuilder->add($widgetId, $widgetId);
+            $formOptions = $data['options'];
 
+            // if ($data['with_choices']) {
+            //     switch($widgetId) {
+            //         case 'radio':
+            //             $formOptions['expanded'] = true;
+            //             $formOptions['multiple'] = false; 
+            //             break;
+            //         case 'checkbox':  
+            //             $formOptions['expanded'] = true;
+            //             $formOptions['multiple'] = true; 
+            //             break;
+            //     }
+
+            //     $widgetId = 'choice';
+            // }
+
+            $formBuilder->add($widgetId, $widgetId, $formOptions);
         }
+
         $form = $formBuilder->getForm();
 
         $response = $this->render('ChromediaWidgetFormBuilderBundle:ElementFactory:availableWidgets.js.twig', array(
