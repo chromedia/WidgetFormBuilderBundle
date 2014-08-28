@@ -39,22 +39,23 @@ CWFB_HtmlWidget.prototype._buildChoices = function() {
     switch(this.widgetId) {
         case 'radio':
         case 'checkbox':
-            var widget = this.el;
-            var widgetWithChoices = '';
+            if (this.widgetChoices.length > 0) {
+                var widget = this.el;
+                var div = document.createElement('div')
 
-            this.widgetChoices.forEach(function(item) {
-                var choice = widget.cloneNode(false);
-                choice.value = item;
-                
-                var label = document.createElement('label');
-                label.appendChild(document.createTextNode(item));
+                this.widgetChoices.forEach(function(item) {
+                    var choice = widget.cloneNode(false);
+                    choice.value = item;
+                    
+                    var label = document.createElement('label');
+                    label.appendChild(document.createTextNode(item));
 
-                // widgetWithChoices += choice.toString() + label.toString(); 
+                    div.appendChild(choice);
+                    div.appendChild(label);
+                });
 
-                // console.log(widgetWithChoices);
-            });
-
-            //this.el = CWFB_jQueryUtility.htmlStringToDOM(widgetWithChoices);
+                this.el = div.childNodes;
+            }
 
             break;
         case 'choice':
