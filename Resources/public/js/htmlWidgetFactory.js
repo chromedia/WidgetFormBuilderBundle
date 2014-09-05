@@ -1,14 +1,17 @@
 var CWFB_HtmlWidgetFactory = (function($){
     return {
-        buildFromJSON: function(jsonString) {
-            try {
-                jsonString = function(str) {
-                    return (str + '').replace(/[\\]/g, '\\$&').replace(/\u0000/g, '\\0');
-                }(jsonString);
-                var metadata = window.JSON.parse(jsonString);
-            }
-            catch (e) {
-                throw "CWFB_HtmlWidgetFactory: jsonString is not valid.";
+        buildFromJSON: function(metadata) {
+            
+            if(typeof metadata == 'string') {
+                try {
+                    metadata = function(str) {
+                        return (str + '').replace(/[\\]/g, '\\$&').replace(/\u0000/g, '\\0');
+                    }(metadata);
+                    metadata = window.JSON.parse(metadata);
+                }
+                catch (e) {
+                    throw "CWFB_HtmlWidgetFactory: jsonString is not valid.";
+                }                
             }
             
             if (!metadata.widget_id) {
