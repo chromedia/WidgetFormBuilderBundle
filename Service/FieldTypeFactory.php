@@ -48,7 +48,7 @@ class FieldTypeFactory
     public function setServiceContainer($v)
     {
         $this->container = $v;
-    }    
+    }
 
 
     /**
@@ -80,13 +80,13 @@ class FieldTypeFactory
         $fieldType = $this->coreFormFactory->createNamedBuilder($name, $widgetMetadata['widget_id'], $formData, $formOptions);
 
         $this->addTransformers($widgetMetadata, $fieldType);
-        
-        
+
+
         return $fieldType;
     }
 
     /**
-     *  
+     *
      */
     private function buildWidget(&$widgetMetadata, &$formOptions)
     {
@@ -101,11 +101,11 @@ class FieldTypeFactory
                 switch($widgetMetadata['widget_id']) {
                     case 'radio':
                         $formOptions['expanded'] = true;
-                        $formOptions['multiple'] = false; 
+                        $formOptions['multiple'] = false;
                         break;
-                    case 'checkbox':  
+                    case 'checkbox':
                         $formOptions['expanded'] = true;
-                        $formOptions['multiple'] = true; 
+                        $formOptions['multiple'] = true;
                         break;
                 }
 
@@ -165,14 +165,16 @@ class FieldTypeFactory
     {
         $constraints = array();
         foreach ($widgetMetadata['widget_constraints'] as $constraintData) {
-            if (isset($this->availableConstraints[$constraintData['constraint_id']])) {
-                $class = $this->availableConstraints[$constraintData['constraint_id']]['class'];
-                $constraintObj = new $class($constraintData['constraint_options']);
+            if (isset($constraintData['constraint_id'])) {
+                if (isset($this->availableConstraints[$constraintData['constraint_id']])) {
+                    $class = $this->availableConstraints[$constraintData['constraint_id']]['class'];
+                    $constraintObj = new $class($constraintData['constraint_options']);
 
-                $constraints[] = $constraintObj;
-            }
-            else {
-                throw new \Exception('Unknown Constraint: '.$constraintData['constraint_id']);
+                    $constraints[] = $constraintObj;
+                }
+                else {
+                    throw new \Exception('Unknown Constraint: '.$constraintData['constraint_id']);
+                }
             }
         }
 
@@ -191,10 +193,16 @@ class FieldTypeFactory
     {
         $setOptions = isset($widgetMetadata['widget_config_options']) ? $widgetMetadata['widget_config_options'] : array();
 
+
         // TODO: validate set options
         try {
             foreach($setOptions as $option) {
-                $formOptions = array_merge($formOptions, $option); 
+                foreach ($option as $key => $item) {
+                    if (strlen($key) && !is_null($item)){
+                        $formOptions[$key] = $item;
+                    }
+                }
+                //$formOptions = array_merge($formOptions, $option);
             }
         } catch(\Exception $e) {
             throw new \Exception('An invalid field configuration was set.');
