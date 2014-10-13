@@ -32,6 +32,7 @@ CWFB_HtmlWidget.prototype.build = function(){
 };
 
 CWFB_HtmlWidget.prototype._buildElement = function() {
+    console.log(this.prototypeHtml);
     this.el = CWFB_jQueryUtility.htmlStringToDOM(this.prototypeHtml);
 };
 
@@ -82,11 +83,13 @@ CWFB_HtmlWidget.prototype._buildAttributes = function() {
         for (attributeName in item) {}
 
         if (attributeName) {
-            var inputTags = elDom.querySelectorAll('input, textarea, select');
+            if( Object.prototype.toString.call( elDom ) === '[object NodeList]' ) {
+                var nodes = elDom;
 
-            if (inputTags && inputTags.length > 0) {
-                for(var ctr = 0; ctr < inputTags.length; ctr++) {
-                    inputTags[ctr].setAttribute(attributeName, item[attributeName]);
+                for(var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].tagName == 'input') {
+                        nodes[i].setAttribute(attributeName, item[attributeName]);
+                    }
                 }
             } else {
                 elDom.setAttribute(attributeName, item[attributeName]);

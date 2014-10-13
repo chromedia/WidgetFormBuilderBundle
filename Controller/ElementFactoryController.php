@@ -15,21 +15,6 @@ class ElementFactoryController extends Controller
         foreach ($widgetsData as $widgetId => $data) {
             $formOptions = $data['options'];
 
-            // if ($data['with_choices']) {
-            //     switch($widgetId) {
-            //         case 'radio':
-            //             $formOptions['expanded'] = true;
-            //             $formOptions['multiple'] = false; 
-            //             break;
-            //         case 'checkbox':  
-            //             $formOptions['expanded'] = true;
-            //             $formOptions['multiple'] = true; 
-            //             break;
-            //     }
-
-            //     $widgetId = 'choice';
-            // }
-
             $formBuilder->add($widgetId, $widgetId, $formOptions);
         }
 
