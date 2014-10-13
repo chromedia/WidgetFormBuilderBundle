@@ -146,7 +146,7 @@ class FieldTypeFactory
      */
     private function buildWidgetAttributes($widgetMetadata, &$formOptions)
     {
-        $attr = array();
+        $attr = (isset($formOptions['attr']) && count($formOptions['attr'])) ? $formOptions['attr'] : array();
         foreach ($widgetMetadata['widget_attribute'] as $key => $data) {
             $attr = array_merge($attr, $data);
         }
