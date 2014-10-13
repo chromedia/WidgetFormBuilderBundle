@@ -32,7 +32,6 @@ CWFB_HtmlWidget.prototype.build = function(){
 };
 
 CWFB_HtmlWidget.prototype._buildElement = function() {
-    console.log(this.prototypeHtml);
     this.el = CWFB_jQueryUtility.htmlStringToDOM(this.prototypeHtml);
 };
 
