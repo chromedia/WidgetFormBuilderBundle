@@ -18,7 +18,9 @@ class ConstraintPropertyFieldType extends AbstractType
         $resolver->setDefaults(array(
             'prototype' => true,
             'allow_add' => true,
-            'required'  => false
+            'required'  => false,
+            'empty_data' => '',
+            'data' => ''
         ));
     }
 
