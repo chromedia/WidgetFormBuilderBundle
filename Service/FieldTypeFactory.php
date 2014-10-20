@@ -24,6 +24,8 @@ class FieldTypeFactory
 
     private $widgetTransformers;
 
+    private $ownedTransformers;
+
 
     public function setCoreFormFactory(CoreFormFactory $v)
     {
@@ -51,6 +53,8 @@ class FieldTypeFactory
     }
 
 
+
+
     /**
      *
      * @param unknown $name
@@ -68,6 +72,11 @@ class FieldTypeFactory
         		throw new \Exception(__CLASS__.':createFieldTypeFromWidgetMetadata missing required metadata key ['.$property.']');
         	}
         }
+
+        $this->ownedTransformers = isset($this->widgetTransformers[$widgetMetadata['widget_id']]) ? 
+                                        $this->widgetTransformers[$widgetMetadata['widget_id']] : 
+                                        array();
+
         // build form choices
         $this
             ->buildWidget($widgetMetadata, $formOptions)
@@ -79,8 +88,7 @@ class FieldTypeFactory
 
         $fieldType = $this->coreFormFactory->createNamedBuilder($name, $widgetMetadata['widget_id'], $formData, $formOptions);
 
-        $this->addTransformers($widgetMetadata, $fieldType);
-
+        $this->addTransformers($this->ownedTransformers, $fieldType);
 
         return $fieldType;
     }
@@ -214,10 +222,8 @@ class FieldTypeFactory
     /**
      * Adds transformers
      */
-    private function addTransformers($widgetMetadata, &$fieldType)
+    private function addTransformers($transformers, &$fieldType)
     {
-        $transformers = isset($this->widgetTransformers[$widgetMetadata['widget_id']]) ? $this->widgetTransformers[$widgetMetadata['widget_id']] : array();
-
         foreach ($transformers as $key => $transformer) {
             if (!empty($transformer)) {
                 switch ($key) {
