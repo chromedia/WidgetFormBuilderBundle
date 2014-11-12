@@ -60,14 +60,13 @@ CWFB_HtmlWidget.prototype._buildChoices = function() {
             break;
         case 'choice':
             var elDom = this.el;
-    
+            var select = elDom.firstElementChild||elem.firstChild;
             this.widgetChoices.forEach(function(item) {
                 var opt = document.createElement('option');
                 opt.appendChild(document.createTextNode(item));
-                
-                elDom.appendChild(opt);
+                select.appendChild(opt);
             });
-
+            
             break;
     }
 
