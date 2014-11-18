@@ -28,6 +28,14 @@ class CoreConstraints
             'regex' => array(
                 'name' => 'Regex',
                 'class' => 'Symfony\Component\Validator\Constraints\Regex'
+            ),
+            'image' => array(
+                'name' => 'Image',
+                'class' => 'Symfony\Component\Validator\Constraints\Image'
+            ),
+             'file' => array(
+                'name' => 'File',
+                'class' => 'Symfony\Component\Validator\Constraints\File'
             )
         );
     }
