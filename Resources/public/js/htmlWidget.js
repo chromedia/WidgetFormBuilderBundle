@@ -54,7 +54,7 @@ CWFB_HtmlWidget.prototype._buildChoices = function() {
                     div.appendChild(label);
                 });
 
-                this.el = div.childNodes;
+                this.el = div;
             }
 
             break;
