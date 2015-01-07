@@ -41,10 +41,13 @@ class ChromediaWidgetFormBuilderExtension extends Extension
         $transformers = array();
 
         foreach ($coreWidgets as $widgetId => $widgetData) {
+            $widgetSettings = $widgetData['settings'];
+            if ($widgetSettings && !$widgetSettings['in_widget_list']) {
+                continue;
+            }
             $widgetSelectionChoices[$widgetId] = $widgetData['name'];
             $availableWidgets[$widgetId] = $widgetData;
             $widgetConfigOptions[$widgetId] = $widgetData['options'];
-
             if (isset($widgetData['transformer'])) {
                 $transformers[$widgetId] = $widgetData['transformer'];
             }
@@ -55,7 +58,6 @@ class ChromediaWidgetFormBuilderExtension extends Extension
             $widgetSelectionChoices[$widgetId] = $widgetData['name'];
             $widgetData['internal'] = false; // always set to false
             $availableWidgets[$widgetId] = $widgetData;
-            
             if (isset($widgetData['transformer'])) {
                 $transformers[$widgetId] = $widgetData['transformer'];
             }

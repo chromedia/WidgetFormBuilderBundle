@@ -110,6 +110,9 @@ class Configuration implements ConfigurationInterface
             ->arrayNode('transformer')
                 ->prototype('scalar')->end()
             ->end()
+            ->arrayNode('settings')
+                ->prototype('scalar')->end()
+            ->end()
             // this should be an internal option and should not be overwritten
             ->booleanNode('with_choices')
                 ->defaultValue($widgetProperty['with_choices'])
